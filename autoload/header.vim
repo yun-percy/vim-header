@@ -17,7 +17,7 @@ if !exists('g:header_field_timestamp_format')
     let g:header_field_timestamp_format = '%d.%m.%Y'
 endif
 
-" Path for licese files directory
+" Path for license files directory
 let s:license_files_dir = expand('<sfile>:p:h:h').'/licensefiles/'
 
 " Sets values respect to buffer's filetype
@@ -52,7 +52,7 @@ fun s:set_props()
 
         let b:block_comment = 1
         let b:comment_char = ' *'
-        let b:comment_begin = '/*'
+        let b:comment_begin = '/**'
         let b:comment_end = ' */'
     " ----------------------------------
     elseif b:filetype == 'haskell'
@@ -237,7 +237,7 @@ fun s:add_license_header(license_name)
         let l:line = getline(l:i)
         " If there is a emty line, avoid putting trailing space
         if l:line == ''
-            let l:line = b:comment_char_wo_space . l:line
+            let l:line = b:comment_char_wo_space
         else
             let l:line = b:comment_char . l:line
         endif
@@ -296,7 +296,7 @@ endfun
 "   1: Minified Header
 "   2: License Header (also uses license parameter)
 fun header#add_header(type, license)
-    " If block has been commented bc user may change filetype after opening buffer,
+    " If-block has been commented bc user may change filetype after opening buffer,
     " that's why props have to be set again for each call
     "if !exists('b:is_filetype_available')
         call s:set_props()

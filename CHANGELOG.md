@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - This CHANGELOG file
-- Filetype support for haskel, jsx and html
+- Filetype support for grovy, haskel, jsx, sass and html
 - Control for auto space after comment char according to language.
 - Specific field placeholders according to file type
 

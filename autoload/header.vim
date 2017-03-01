@@ -84,9 +84,10 @@ fun s:set_props()
         let b:comment_char = '"'
     " ----------------------------------
     elseif b:filetype == 'html'
-        let b:first_line = <!DOCTYPE html>
-        let b:comment_begin = '<--'
-        let b:comment_char = '-'
+        let b:first_line = '<!DOCTYPE html>'
+        let b:block_comment = 1
+        let b:comment_char = ' -'
+        let b:comment_begin = '<!--'
         let b:comment_end = '-->'
     "-----------------------------------
     else

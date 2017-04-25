@@ -26,24 +26,26 @@ Examples
 For example, when you open a file named `start.sh` and press `F4` after above settings, plugin will add these lines at the top of your buffer
 ```sh
 #!/bin/bash
-# start.sh
+# File: start.sh
 # Author: Your Name <your@mail>
 # Date: 13.03.2016
+# Last Modified: 13.03.2016
 ```
 or for a file named `index.php`
 ```php
 <?php
 /*
- * index.php
- * Author: Your Name <your@mail>
+ * File: index.php
+ * @author: Your Name <your@mail>
  * Date: 13.03.2016
+ * Last Modified: 13.03.2016
  */
 ```
 Commands
 ========
 Adding Brief Headers
 
-- `:AddHeader` Adds brief author information
+- `:AddHeader` Adds brief author information or updates if exists
 - `:AddMinHeader` Adds minified version of author information
 
 Adding Lincenses
@@ -70,11 +72,19 @@ It adds your email after author name with surrounding `<``>` chars. If you don't
 ```vim
 let g:header_field_timestamp = 0
 ```
-It disables to add timestamp line of generating header date in header. Default is 1.
+It disables to add creating date line. Default is 1.
+```vim
+let g:header_field_modified_timestamp = 0
+```
+It disables to add modified date line. Default is 1.
 ```vim
 let g:header_field_timestamp_format = '%d.%m.%Y'
 ```
 It sets timestamp format for your locale. Default is '%d.%m.%Y'.
+```vim
+let g:header_auto_add_header = 0
+```
+It disables to add header automatically. Default is 1.
 
 Support
 =======

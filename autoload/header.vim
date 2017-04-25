@@ -13,6 +13,9 @@ endif
 if !exists('g:header_field_timestamp')
     let g:header_field_timestamp = 1
 endif
+if !exists('g:header_field_modified_timestamp')
+    let g:header_field_modified_timestamp = 1
+endif
 if !exists('g:header_field_timestamp_format')
     let g:header_field_timestamp_format = '%d.%m.%Y'
 endif
@@ -37,6 +40,7 @@ fun s:set_props()
     let b:field_file = 'File:'
     let b:field_author = 'Author:'
     let b:field_date = 'Date:'
+    let b:field_modified_date = 'Last Modified:'
 
     " Setting Values for Languages
     if
@@ -159,11 +163,30 @@ fun s:add_header()
         call append(l:i, b:comment_char . b:field_date . ' ' . strftime(g:header_field_timestamp_format))
         let l:i += 1
     endif
+    if g:header_field_modified_timestamp
+        call append(l:i, b:comment_char . b:field_modified_date . ' ' . strftime(g:header_field_timestamp_format))
+        let l:i += 1
+    endif
 
     " If filetype supports block comment, close comment
     if b:block_comment
         call append(l:i, b:comment_end)
     endif
+endfun
+
+" Update Header
+fun s:update_header()
+    " Update file name
+    if g:header_field_filename
+        let l:field = substitute(substitute(substitute(b:comment_char . b:field_file, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', '')
+        execute '/' . b:comment_char . b:field_file . '/s@.*$@\="' . l:field . ' " . expand("%s:t")@'
+    endif
+    " Update last modified date
+    if g:header_field_modified_timestamp
+        let l:field = substitute(substitute(substitute(b:comment_char . b:field_modified_date, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', '')
+        silent! execute '/' . b:comment_char . b:field_modified_date . '/s@.*$@\="' . l:field . ' " . strftime("' . g:header_field_timestamp_format . '")@'
+    endif
+    echo 'Header was updated succesfully.'
 endfun
 
 " Generate Minified Header
@@ -297,14 +320,23 @@ endfun
 "   1: Minified Header
 "   2: License Header (also uses license parameter)
 fun header#add_header(type, license)
-    " If-block has been commented bc user may change filetype after opening buffer,
-    " that's why props have to be set again for each call
-    "if !exists('b:is_filetype_available')
-        call s:set_props()
-    "endif
+    call s:set_props()
 
     " If filetype is available, add header else inform user
     if b:is_filetype_available
+        " If there is already header, update it
+        if a:type == 0
+            let i = 1
+            while i < 10
+                let line = getline(i)
+                if line =~ '^' . substitute(substitute(b:comment_char . b:field_file, '\*', '\\\*', ''), '\.', '\\\.', '')
+                    call s:update_header()
+                    return
+                endif
+                let i = i + 1
+            endwhile
+        endif
+
         " Select header generator
         if a:type == 0
             call s:add_header()

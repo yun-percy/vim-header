@@ -319,7 +319,7 @@ endfun
 "   0: Normal Header
 "   1: Minified Header
 "   2: License Header (also uses license parameter)
-fun header#add_header(type, license)
+fun header#add_header(type, license, silent)
     call s:set_props()
 
     " If filetype is available, add header else inform user
@@ -348,6 +348,10 @@ fun header#add_header(type, license)
             echo 'There is no "' . a:type . '" type to add header.'
         endif
     else
+        if a:silent == 1
+            return
+        endif
+
         if b:filetype == ''
             let l:filetype = 'this'
         else

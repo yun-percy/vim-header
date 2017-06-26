@@ -94,6 +94,10 @@ fun s:set_props()
         let b:comment_begin = '<!--'
         let b:comment_end = '-->'
     "-----------------------------------
+    elseif b:filetype == 'pug'
+        let b:first_line = '//-'
+        let b:comment_char = ' '
+    " ----------------------------------
     else
         let b:is_filetype_available = 0
     endif
@@ -179,12 +183,12 @@ fun s:update_header()
     " Update file name
     if g:header_field_filename
         let l:field = substitute(substitute(substitute(b:comment_char . b:field_file, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', '')
-        execute '/' . b:comment_char . b:field_file . '/s@.*$@\="' . l:field . ' " . expand("%s:t")@'
+        execute '/' . b:comment_char . b:field_file . '/s@.*$@\=''' . l:field . ' '' . expand("%s:t")@'
     endif
     " Update last modified date
     if g:header_field_modified_timestamp
         let l:field = substitute(substitute(substitute(b:comment_char . b:field_modified_date, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', '')
-        silent! execute '/' . b:comment_char . b:field_modified_date . '/s@.*$@\="' . l:field . ' " . strftime("' . g:header_field_timestamp_format . '")@'
+        silent! execute '/' . b:comment_char . b:field_modified_date . '/s@.*$@\=''' . l:field . ' '' . strftime("' . g:header_field_timestamp_format . '")@'
     endif
     echo 'Header was updated succesfully.'
 endfun

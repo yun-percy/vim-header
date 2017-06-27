@@ -90,22 +90,35 @@ Support
 =======
 Supported filetypes are;
 
+- asm
 - c
+- clojure
 - cpp
+- cs
 - css
+- elixir
+- erlang
+- go
 - groovy
 - haskel
 - java
 - javascript
 - jsx
+- lisp
 - lua
+- ocaml
 - php
 - perl
+- plaintex
 - python
+- ruby
 - sass
+- scala
+- scheme
 - sh
 - tmux
 - vim
+- xdefaults
 
 And licenses are;
 

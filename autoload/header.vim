@@ -49,9 +49,11 @@ fun s:set_props()
         \ b:filetype == 'css' ||
         \ b:filetype == 'groovy' ||
         \ b:filetype == 'java' ||
+        \ b:filetype == 'scala' ||
         \ b:filetype == 'javascript' ||
         \ b:filetype == 'javascript.jsx' ||
         \ b:filetype == 'php' ||
+        \ b:filetype == 'go' ||
         \ b:filetype == 'sass'
 
         let b:block_comment = 1
@@ -84,11 +86,37 @@ fun s:set_props()
         let b:first_line = '#!/bin/bash'
         let b:comment_char = '#'
     " ----------------------------------
+    elseif b:filetype == "ruby" ||
+          \ b:filetype == "elixir"
+        let b:comment_char = '#'
+    " ----------------------------------
+    elseif b:filetype == "erlang" ||
+          \ b:filetype == "plaintex"
+        let b:comment_char = "%%"
+    " ----------------------------------
     elseif b:filetype == 'tmux'
         let b:comment_char = '#'
     " ----------------------------------
     elseif b:filetype == 'vim'
         let b:comment_char = '"'
+    " ----------------------------------
+    elseif b:filetype == "lisp" ||
+          \ b:filetype == "scheme" ||
+          \ b:filetype == "asm" ||
+          \ b:filetype == "clojure"
+        let b:comment_char = ";;"
+    " ----------------------------------
+    elseif b:filetype == "cs"
+        let b:comment_char = "//"
+    " ----------------------------------
+    elseif b:filetype == "xdefaults"
+        let b:comment_char = "!!"
+    " ----------------------------------
+    elseif b:filetype == "ocaml"
+        let b:comment_begin = "(**"
+        let b:comment_end = "*)"
+        let b:comment_char = "*"
+        let b:block_comment = 1
     " ----------------------------------
     elseif b:filetype == 'html'
         let b:first_line = '<!DOCTYPE html>'

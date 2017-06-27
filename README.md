@@ -104,6 +104,7 @@ Supported filetypes are;
 - python
 - sass
 - sh
+- tmux
 - vim
 
 And licenses are;

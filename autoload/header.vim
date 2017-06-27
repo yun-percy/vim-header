@@ -1,3 +1,7 @@
+" File: header.vim
+" Author: Clement Trosa <me@trosa.io>
+" Date: 27/06/2017 02:13:35 PM
+" Last Modified: 27/06/2017 02:22:14 PM
 " PROPERTIES AND FUNCTIONS FOR GENERAL PURPOSES
 " ---------------------------------------------
 " Set default global values
@@ -49,6 +53,7 @@ fun s:set_props()
         \ b:filetype == 'css' ||
         \ b:filetype == 'groovy' ||
         \ b:filetype == 'java' ||
+        \ b:filetype == 'scala' ||
         \ b:filetype == 'javascript' ||
         \ b:filetype == 'javascript.jsx' ||
         \ b:filetype == 'php' ||
@@ -84,11 +89,28 @@ fun s:set_props()
         let b:first_line = '#!/bin/bash'
         let b:comment_char = '#'
     " ----------------------------------
+    elseif b:filetype == "ruby" ||
+          \ b:filetype == "elixir"
+        let b:comment_char = '#'
+    " ----------------------------------
+    elseif b:filetype == "erl" ||
+          \ b:filetype == "plaintex"
+        let b:comment_char = "%%"
+    " ----------------------------------
     elseif b:filetype == 'tmux'
         let b:comment_char = '#'
     " ----------------------------------
-    elseif b:filetype == 'vim'
+    elseif b:filetype == 'vim' ||
+          \ b:filetype == "asm"
         let b:comment_char = '"'
+    " ----------------------------------
+    elseif b:filetype == "lisp" ||
+          \ b:filetype == "scheme" ||
+          \ b:filetype == "clojure"
+        let b:comment_char = ";;"
+    " ----------------------------------
+    elseif b:filetype == "cs"
+        let b:comment_char = "//"
     " ----------------------------------
     elseif b:filetype == 'html'
         let b:first_line = '<!DOCTYPE html>'

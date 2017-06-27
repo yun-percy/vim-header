@@ -84,6 +84,9 @@ fun s:set_props()
         let b:first_line = '#!/bin/bash'
         let b:comment_char = '#'
     " ----------------------------------
+    elseif b:filetype == 'tmux'
+        let b:comment_char = '#'
+    " ----------------------------------
     elseif b:filetype == 'vim'
         let b:comment_char = '"'
     " ----------------------------------

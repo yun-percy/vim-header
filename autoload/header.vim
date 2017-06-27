@@ -1,7 +1,7 @@
 " File: header.vim
 " Author: Clement Trosa <me@trosa.io>
 " Date: 27/06/2017 02:13:35 PM
-" Last Modified: 27/06/2017 02:22:14 PM
+" Last Modified: 27/06/2017 02:34:17 PM
 " PROPERTIES AND FUNCTIONS FOR GENERAL PURPOSES
 " ---------------------------------------------
 " Set default global values
@@ -57,6 +57,7 @@ fun s:set_props()
         \ b:filetype == 'javascript' ||
         \ b:filetype == 'javascript.jsx' ||
         \ b:filetype == 'php' ||
+        \ b:filetype == 'go' ||
         \ b:filetype == 'sass'
 
         let b:block_comment = 1
@@ -93,24 +94,33 @@ fun s:set_props()
           \ b:filetype == "elixir"
         let b:comment_char = '#'
     " ----------------------------------
-    elseif b:filetype == "erl" ||
+    elseif b:filetype == "erlang" ||
           \ b:filetype == "plaintex"
         let b:comment_char = "%%"
     " ----------------------------------
     elseif b:filetype == 'tmux'
         let b:comment_char = '#'
     " ----------------------------------
-    elseif b:filetype == 'vim' ||
-          \ b:filetype == "asm"
+    elseif b:filetype == 'vim'
         let b:comment_char = '"'
     " ----------------------------------
     elseif b:filetype == "lisp" ||
           \ b:filetype == "scheme" ||
+          \ b:filetype == "asm" ||
           \ b:filetype == "clojure"
-        let b:comment_char = ";;"
+        let b:comment_char = ";"
     " ----------------------------------
     elseif b:filetype == "cs"
         let b:comment_char = "//"
+    " ----------------------------------
+    elseif b:filetype == "xdefaults"
+        let b:comment_char = "!!"
+    " ----------------------------------
+    elseif b:filetype == "ocalm"
+        let b:comment_begin = "(**"
+        let b:comment_end = "*)"
+        let b:comment_char = "*"
+        let b:block_comment = 1
     " ----------------------------------
     elseif b:filetype == 'html'
         let b:first_line = '<!DOCTYPE html>'

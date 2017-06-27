@@ -1,7 +1,7 @@
 " File: header.vim
 " Author: Clement Trosa <me@trosa.io>
 " Date: 27/06/2017 02:13:35 PM
-" Last Modified: 27/06/2017 02:34:17 PM
+" Last Modified: 27/06/2017 02:37:58 PM
 " PROPERTIES AND FUNCTIONS FOR GENERAL PURPOSES
 " ---------------------------------------------
 " Set default global values
@@ -116,7 +116,7 @@ fun s:set_props()
     elseif b:filetype == "xdefaults"
         let b:comment_char = "!!"
     " ----------------------------------
-    elseif b:filetype == "ocalm"
+    elseif b:filetype == "ocaml"
         let b:comment_begin = "(**"
         let b:comment_end = "*)"
         let b:comment_char = "*"

@@ -29,7 +29,8 @@ For example, when you open a file named `start.sh` and press `F4` after above se
 # File: start.sh
 # Author: Your Name <your@mail>
 # Date: 13.03.2016
-# Last Modified: 13.03.2016
+# Last Modified Date: 13.03.2016
+# Last Modified By: Your Name <your@mail>
 ```
 or for a file named `index.php`
 ```php
@@ -38,7 +39,8 @@ or for a file named `index.php`
  * File: index.php
  * @author: Your Name <your@mail>
  * Date: 13.03.2016
- * Last Modified: 13.03.2016
+ * Last Modified Date: 13.03.2016
+ * Last Modified By: Your Name <your@mail>
  */
 ```
 Commands
@@ -77,6 +79,10 @@ It disables to add creating date line. Default is 1.
 let g:header_field_modified_timestamp = 0
 ```
 It disables to add modified date line. Default is 1.
+```vim
+let g:header_field_modified_by = 0
+```
+It disables to add modified author line. Default is 1. Likewise the author name line, if you don't define your author name, this line won't be shown. If your email is defined together with your name, your email will be appended after your author name.
 ```vim
 let g:header_field_timestamp_format = '%d.%m.%Y'
 ```

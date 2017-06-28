@@ -16,6 +16,9 @@ endif
 if !exists('g:header_field_modified_timestamp')
     let g:header_field_modified_timestamp = 1
 endif
+if !exists('g:header_field_modified_by')
+    let g:header_field_modified_by = 1
+endif
 if !exists('g:header_field_timestamp_format')
     let g:header_field_timestamp_format = '%d.%m.%Y'
 endif
@@ -40,7 +43,8 @@ fun s:set_props()
     let b:field_file = 'File:'
     let b:field_author = 'Author:'
     let b:field_date = 'Date:'
-    let b:field_modified_date = 'Last Modified:'
+    let b:field_modified_date = 'Last Modified Date:'
+    let b:field_modified_by= 'Last Modified By:'
 
     " Setting Values for Languages
     if
@@ -202,6 +206,15 @@ fun s:add_header()
         call append(l:i, b:comment_char . b:field_modified_date . ' ' . strftime(g:header_field_timestamp_format))
         let l:i += 1
     endif
+    if g:header_field_modified_by && g:header_field_author != ''
+        if g:header_field_author_email != ''
+            let l:email = ' <' . g:header_field_author_email . '>'
+        else
+            let l:email = ''
+        endif
+        call append(l:i, b:comment_char . b:field_modified_by . ' ' . g:header_field_author . l:email)
+        let l:i += 1
+    endif
 
     " If filetype supports block comment, close comment
     if b:block_comment
@@ -220,6 +233,16 @@ fun s:update_header()
     if g:header_field_modified_timestamp
         let l:field = substitute(substitute(substitute(b:comment_char . b:field_modified_date, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', '')
         silent! execute '/' . b:comment_char . b:field_modified_date . '/s@.*$@\=''' . l:field . ' '' . strftime("' . g:header_field_timestamp_format . '")@'
+    endif
+    " Update last modified author
+    if g:header_field_modified_by && g:header_field_author != ''
+        if g:header_field_author_email != ''
+            let l:email = ' <' . g:header_field_author_email . '>'
+        else
+            let l:email = ''
+        endif
+        let l:field = substitute(substitute(substitute(b:comment_char . b:field_modified_by, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', '')
+        silent! execute '/' . b:comment_char . b:field_modified_by . '/s@.*$@\=''' . l:field . ' '' . g:header_field_author . l:email@'
     endif
     echo 'Header was updated succesfully.'
 endfun

@@ -1,8 +1,9 @@
-#vim-header
+vim-header
+==========
 Easily adds brief author info and license headers
 
 Install
-=======
+-------
 Preferred installation method is [Pathogen](https://github.com/tpope/vim-pathogen)
 ```sh
 cd ~/.vim/bundle
@@ -11,7 +12,7 @@ git clone https://github.com/alpertuna/vim-header
 Or you can use your own way
 
 Usage
-=====
+-----
 This is a general usage example.
 You can add these lines into your `.vimrc`
 ```vim
@@ -22,14 +23,15 @@ map <F4> :AddHeader<CR>
 Pressing `F4` in normal mode will add a brief author information at the top of your buffer.
 
 Examples
-========
+--------
 For example, when you open a file named `start.sh` and press `F4` after above settings, plugin will add these lines at the top of your buffer
 ```sh
 #!/bin/bash
 # File: start.sh
 # Author: Your Name <your@mail>
 # Date: 13.03.2016
-# Last Modified: 13.03.2016
+# Last Modified Date: 13.03.2016
+# Last Modified By: Your Name <your@mail>
 ```
 or for a file named `index.php`
 ```php
@@ -38,11 +40,12 @@ or for a file named `index.php`
  * File: index.php
  * @author: Your Name <your@mail>
  * Date: 13.03.2016
- * Last Modified: 13.03.2016
+ * Last Modified Date: 13.03.2016
+ * Last Modified By: Your Name <your@mail>
  */
 ```
 Commands
-========
+--------
 Adding Brief Headers
 
 - `:AddHeader` Adds brief author information or updates if exists
@@ -55,7 +58,7 @@ Adding Lincenses
 - `:AddGNULicense` Adds GNU License with author info
 
 Settings
-========
+--------
 These settings are for your `.vimrc`
 ```vim
 let g:header_field_filename = 0
@@ -68,7 +71,7 @@ It adds your name as author. Default is ''. Empty string means to disable adding
 ```vim
 let g:header_field_author_email = 'your@mail'
 ```
-It adds your email after author name with surrounding `<``>` chars. If you don't define your author name, defined email also won't be shown. Default is ''. Empty string means to disable adding it.
+It adds your email after author name with surrounding `<` `>` chars. If you don't define your author name, defined email also won't be shown. Default is ''. Empty string means to disable adding it.
 ```vim
 let g:header_field_timestamp = 0
 ```
@@ -77,6 +80,10 @@ It disables to add creating date line. Default is 1.
 let g:header_field_modified_timestamp = 0
 ```
 It disables to add modified date line. Default is 1.
+```vim
+let g:header_field_modified_by = 0
+```
+It disables to add modified author line. Default is 1. Likewise the author name line, if you don't define your author name, this line won't be shown. If your email is defined together with your name, your email will be appended after your author name.
 ```vim
 let g:header_field_timestamp_format = '%d.%m.%Y'
 ```
@@ -87,7 +94,7 @@ let g:header_auto_add_header = 0
 It disables to add header automatically. Default is 1.
 
 Support
-=======
+-------
 Supported filetypes are;
 
 - asm
@@ -128,5 +135,5 @@ And licenses are;
 
 If you want more filetypes or licenses, you can open issues or provide any improvements by pull requests on [alpertuna/vim-header](https://github.com/alpertuna/vim-header). Also you can correct my English on README file or at comments in source code.
 
-###Thanks to Contributors
+### Thanks to Contributors
 [Contributors List](https://github.com/alpertuna/vim-header/graphs/contributors)

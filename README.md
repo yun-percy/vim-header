@@ -1,8 +1,9 @@
-#vim-header
+vim-header
+==========
 Easily adds brief author info and license headers
 
 Install
-=======
+-------
 Preferred installation method is [Pathogen](https://github.com/tpope/vim-pathogen)
 ```sh
 cd ~/.vim/bundle
@@ -11,7 +12,7 @@ git clone https://github.com/alpertuna/vim-header
 Or you can use your own way
 
 Usage
-=====
+-----
 This is a general usage example.
 You can add these lines into your `.vimrc`
 ```vim
@@ -22,7 +23,7 @@ map <F4> :AddHeader<CR>
 Pressing `F4` in normal mode will add a brief author information at the top of your buffer.
 
 Examples
-========
+--------
 For example, when you open a file named `start.sh` and press `F4` after above settings, plugin will add these lines at the top of your buffer
 ```sh
 #!/bin/bash
@@ -44,7 +45,7 @@ or for a file named `index.php`
  */
 ```
 Commands
-========
+--------
 Adding Brief Headers
 
 - `:AddHeader` Adds brief author information or updates if exists
@@ -57,7 +58,7 @@ Adding Lincenses
 - `:AddGNULicense` Adds GNU License with author info
 
 Settings
-========
+--------
 These settings are for your `.vimrc`
 ```vim
 let g:header_field_filename = 0
@@ -93,7 +94,7 @@ let g:header_auto_add_header = 0
 It disables to add header automatically. Default is 1.
 
 Support
-=======
+-------
 Supported filetypes are;
 
 - asm
@@ -134,5 +135,5 @@ And licenses are;
 
 If you want more filetypes or licenses, you can open issues or provide any improvements by pull requests on [alpertuna/vim-header](https://github.com/alpertuna/vim-header). Also you can correct my English on README file or at comments in source code.
 
-###Thanks to Contributors
+### Thanks to Contributors
 [Contributors List](https://github.com/alpertuna/vim-header/graphs/contributors)

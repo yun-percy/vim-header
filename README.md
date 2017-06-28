@@ -71,7 +71,7 @@ It adds your name as author. Default is ''. Empty string means to disable adding
 ```vim
 let g:header_field_author_email = 'your@mail'
 ```
-It adds your email after author name with surrounding `<``>` chars. If you don't define your author name, defined email also won't be shown. Default is ''. Empty string means to disable adding it.
+It adds your email after author name with surrounding `<` `>` chars. If you don't define your author name, defined email also won't be shown. Default is ''. Empty string means to disable adding it.
 ```vim
 let g:header_field_timestamp = 0
 ```

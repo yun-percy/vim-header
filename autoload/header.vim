@@ -91,15 +91,13 @@ fun s:set_props()
         let b:comment_char = '#'
     " ----------------------------------
     elseif b:filetype == "ruby" ||
-          \ b:filetype == "elixir"
+          \ b:filetype == "elixir" ||
+          \ b:filetype == "tmux"
         let b:comment_char = '#'
     " ----------------------------------
     elseif b:filetype == "erlang" ||
           \ b:filetype == "plaintex"
         let b:comment_char = "%%"
-    " ----------------------------------
-    elseif b:filetype == 'tmux'
-        let b:comment_char = '#'
     " ----------------------------------
     elseif b:filetype == 'vim'
         let b:comment_char = '"'

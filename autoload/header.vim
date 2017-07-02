@@ -224,13 +224,13 @@ endfun
 fun s:update_header()
     " Update file name
     if g:header_field_filename
-        let l:field = substitute(substitute(substitute(b:comment_char . b:field_file, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', '')
-        execute '/' . b:comment_char . b:field_file . '/s@.*$@\=''' . l:field . ' '' . expand("%s:t")@'
+        let l:field = substitute(substitute(substitute(substitute(b:comment_char . b:field_file, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', ''), '"', '\\"', '')
+        execute '/' . b:comment_char . b:field_file . '/s@.*$@\="' . l:field . ' " . expand("%s:t")@'
     endif
     " Update last modified date
     if g:header_field_modified_timestamp
-        let l:field = substitute(substitute(substitute(b:comment_char . b:field_modified_date, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', '')
-        silent! execute '/' . b:comment_char . b:field_modified_date . '/s@.*$@\=''' . l:field . ' '' . strftime("' . g:header_field_timestamp_format . '")@'
+        let l:field = substitute(substitute(substitute(substitute(b:comment_char . b:field_modified_date, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', ''), '"', '\\"', '')
+        silent! execute '/' . b:comment_char . b:field_modified_date . '/s@.*$@\="' . l:field . ' " . strftime("' . g:header_field_timestamp_format . '")@'
     endif
     " Update last modified author
     if g:header_field_modified_by && g:header_field_author != ''
@@ -239,8 +239,8 @@ fun s:update_header()
         else
             let l:email = ''
         endif
-        let l:field = substitute(substitute(substitute(b:comment_char . b:field_modified_by, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', '')
-        silent! execute '/' . b:comment_char . b:field_modified_by . '/s@.*$@\=''' . l:field . ' '' . g:header_field_author . l:email@'
+        let l:field = substitute(substitute(substitute(substitute(b:comment_char . b:field_modified_by, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', ''), '"', '\\"', '')
+        silent! execute '/' . b:comment_char . b:field_modified_by . '/s@.*$@\="' . l:field . ' " . g:header_field_author . l:email@'
     endif
     echo 'Header was updated succesfully.'
 endfun

@@ -117,6 +117,7 @@ Supported filetypes are;
 - php
 - perl
 - plaintex
+- pug
 - python
 - ruby
 - sass

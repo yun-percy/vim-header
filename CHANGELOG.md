@@ -5,11 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - This CHANGELOG file
-- Filetype support for grovy, haskel, lua, jsx,  sass, html, tmux, go, scala, ruby, elixir, erlang, plaintex, lisp, scheme, asm, clojure, cs, xdefaults, ocaml
+- Filetype support for grovy, haskel, lua, jsx,  sass, html, tmux, go, scala, ruby, elixir, erlang, plaintex, lisp, scheme, asm, clojure, cs, xdefaults, ocaml, pug
 - Control for auto space after comment char according to language.
 - Specific field placeholders according to file type
-- Modified date field
 - Auto add header support
+- Modified date field
+- Modified date by field
 
 ### Fixed
 - Make plugin determine file type for each call to catch new file type if changed

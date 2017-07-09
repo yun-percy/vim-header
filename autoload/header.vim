@@ -164,6 +164,7 @@ endfun
 " -----------------
 " Generate Header
 fun s:add_header()
+    let l:save_pos = getpos(".")
     let l:i = 0
 
     " If filetype has initial line
@@ -218,10 +219,12 @@ fun s:add_header()
     if b:block_comment
         call append(l:i, b:comment_end)
     endif
+    call setpos(".", l:save_pos)
 endfun
 
 " Update Header
 fun s:update_header()
+    let l:save_pos = getpos(".")
     " Update file name
     if g:header_field_filename
         let l:field = substitute(substitute(substitute(substitute(b:comment_char . b:field_file, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', ''), '"', '\\"', '')
@@ -243,10 +246,12 @@ fun s:update_header()
         silent! execute '/' . b:comment_char . b:field_modified_by . '/s@.*$@\="' . l:field . ' " . g:header_field_author . l:email@'
     endif
     echo 'Header was updated succesfully.'
+    call setpos(".", l:save_pos)
 endfun
 
 " Generate Minified Header
 fun s:add_min_header()
+    let l:save_pos = getpos(".")
     let l:i = 0
 
     " If filetype has initial line
@@ -294,10 +299,12 @@ fun s:add_min_header()
 
     " Add line to file
     call append(l:i, l:header_line)
+    call setpos(".", l:save_pos)
 endfun
 
 " Generate License Header
 fun s:add_license_header(license_name)
+    let l:save_pos = getpos(".")
     " Path to license file
     let l:file_name = s:license_files_dir . a:license_name
     " If license file is not exists, inform user
@@ -366,6 +373,7 @@ fun s:add_license_header(license_name)
     if b:block_comment
         call append(l:i+l:license_line_count, b:comment_end)
     endif
+    call setpos(".", l:save_pos)
 endfun
 
 " MAIN FUNCTION

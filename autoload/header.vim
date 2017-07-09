@@ -34,6 +34,7 @@ fun s:set_props()
 
     " Default Values for Many Languages
     let b:first_line = '' " If file type has initial line
+    let b:first_line_pattern = ''
     let b:encoding = ''   " encoding
     let b:block_comment = 0 " If file type has block comment support
     let b:min_comment_begin = '' " If file type has a special char for minified versions
@@ -79,15 +80,18 @@ fun s:set_props()
     " ----------------------------------
     elseif b:filetype == 'perl'
         let b:first_line = '#!/usr/bin/env perl'
+        let b:first_line_pattern = '#!\s*/usr/bin/env\s* perl'
         let b:comment_char = '#'
     " ----------------------------------
     elseif b:filetype == 'python'
         let b:first_line = '#!/usr/bin/env python'
+        let b:first_line_pattern = '#!\s*/usr/bin/env\s* python'
         let b:encoding = '# -*- coding: utf-8 -*-'
         let b:comment_char = '#'
     " ----------------------------------
     elseif b:filetype == 'sh'
         let b:first_line = '#!/bin/bash'
+        let b:first_line_pattern = '#!\s*/bin/bash'
         let b:comment_char = '#'
     " ----------------------------------
     elseif b:filetype == "ruby" ||
@@ -122,6 +126,7 @@ fun s:set_props()
     " ----------------------------------
     elseif b:filetype == 'html'
         let b:first_line = '<!DOCTYPE html>'
+        let b:first_line_pattern = '<!DOCTYPE\s* html>'
         let b:block_comment = 1
         let b:comment_char = ' -'
         let b:comment_begin = '<!--'
@@ -129,6 +134,7 @@ fun s:set_props()
     "-----------------------------------
     elseif b:filetype == 'pug'
         let b:first_line = '//-'
+        let b:first_line_pattern = '//-'
         let b:comment_char = ' '
     " ----------------------------------
     else
@@ -138,6 +144,7 @@ fun s:set_props()
     " Individual settings for special cases
     if b:filetype == 'php'
         let b:first_line = '<?php'
+        let b:first_line_pattern = '<?php'
         let b:field_author = '@author'
     endif
     if b:filetype == 'css'
@@ -169,8 +176,13 @@ fun s:add_header()
 
     " If filetype has initial line
     if b:first_line != ''
-        call append(l:i, b:first_line)
-        let l:i += 1
+        let l:line = search(b:first_line_pattern)
+        if l:line == 0
+            call append(l:i, b:first_line)
+            let l:i += 1
+        else
+            let l:i = l:line
+        endif
     endif
     " if has encoding
     if b:encoding != ''
@@ -256,8 +268,13 @@ fun s:add_min_header()
 
     " If filetype has initial line
     if b:first_line != ''
-        call append(l:i, b:first_line)
-        let l:i += 1
+        let l:line = search(b:first_line_pattern)
+        if l:line == 0
+            call append(l:i, b:first_line)
+            let l:i += 1
+        else
+            let l:i = l:line
+        endif
     endif
 
     if b:encoding != ''
@@ -305,41 +322,18 @@ endfun
 " Generate License Header
 fun s:add_license_header(license_name)
     let l:save_pos = getpos(".")
-    " Path to license file
-    let l:file_name = s:license_files_dir . a:license_name
-    " If license file is not exists, inform user
-    if !filereadable(l:file_name)
-        echo 'There is no defined "' . a:license_name . '" license.'
-        return
-    endif
-
-    " Add raw license, and count lines of it
-    let l:license_line_count = -line('$')
-    execute '0read ' . expand(l:file_name)
-    let l:license_line_count += line('$')
-
-    " Take raw license into comment
-    let l:i = 1
-    while l:i <= l:license_line_count
-        let l:line = getline(l:i)
-        " If there is a emty line, avoid putting trailing space
-        if l:line == ''
-            let l:line = b:comment_char_wo_space
-        else
-            let l:line = b:comment_char . l:line
-        endif
-
-        call setline(l:i,l:line)
-        let l:i += 1
-    endwhile
-
-    " Surrounding license block with other infos
+    " Add other infos
     let l:i = 0
 
     " If filetype has initial line
     if b:first_line != ''
-        call append(0, b:first_line)
-        let l:i += 1
+        let l:line = search(b:first_line_pattern)
+        if l:line == 0
+            call append(l:i, b:first_line)
+            let l:i += 1
+        else
+            let l:i = l:line
+        endif
     endif
 
     if b:encoding != ''
@@ -365,14 +359,45 @@ fun s:add_license_header(license_name)
             let l:email = ''
         endif
         call append(l:i, b:comment_char . 'Copyright (c) ' . strftime('%Y') . ' ' . g:header_field_author . l:email)
-        call append(l:i+1, b:comment_char)
+        call append(l:i+1, b:comment_char_wo_space)
         let l:i += 2
     endif
-
     " If filetype supports block comment, close comment
     if b:block_comment
         call append(l:i+l:license_line_count, b:comment_end)
+        let l:i += 1
     endif
+
+    " Path to license file
+    let l:file_name = s:license_files_dir . a:license_name
+    " If license file is not exists, inform user
+    if !filereadable(l:file_name)
+        echo 'There is no defined "' . a:license_name . '" license.'
+        return
+    endif
+
+    " Add raw license, and count lines of it
+    let l:license_line_count = -line('$')
+    execute expand(l:i) . 'read ' . expand(l:file_name)
+    let l:license_line_count += line('$')
+
+    let l:i += 1
+    let l:license_line_count += l:i
+    " Take raw license into comment
+    while l:i < l:license_line_count
+        let l:line = getline(l:i)
+        " If there is an empty line, avoid putting trailing space
+        if l:line == ''
+            let l:line = b:comment_char_wo_space
+        else
+            let l:line = b:comment_char . l:line
+        endif
+
+        call setline(l:i,l:line)
+        let l:i += 1
+    endwhile
+
+
     call setpos(".", l:save_pos)
 endfun
 

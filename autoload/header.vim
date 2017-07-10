@@ -58,15 +58,13 @@ fun s:set_props()
         \ b:filetype == 'javascript.jsx' ||
         \ b:filetype == 'php' ||
         \ b:filetype == 'go' ||
-        \ b:filetype == 'sass'
+        \ b:filetype == 'sass' ||
+        \ b:filetype == 'rust'
 
         let b:block_comment = 1
         let b:comment_char = ' *'
         let b:comment_begin = '/**'
         let b:comment_end = ' */'
-    " ----------------------------------
-    elseif b:filetype == 'rust'
-        let b:comment_char = '//!'
     " ----------------------------------
     elseif b:filetype == 'haskell'
         let b:block_comment = 1

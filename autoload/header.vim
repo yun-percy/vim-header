@@ -65,6 +65,9 @@ fun s:set_props()
         let b:comment_begin = '/**'
         let b:comment_end = ' */'
     " ----------------------------------
+    elseif b:filetype == 'rust'
+        let b:comment_char = '//!'
+    " ----------------------------------
     elseif b:filetype == 'haskell'
         let b:block_comment = 1
         let b:comment_char = ' -'

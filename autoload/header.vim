@@ -225,30 +225,44 @@ fun s:add_header()
     call setpos(".", l:save_pos)
 endfun
 
+" This will replace characters which needs to be escaped in patterns
+fun s:create_pattern_text(text)
+    let patterns = [['\*', '\\\*', ''],['\.', '\\\.', ''],['@', '\\@', ''],[ '"', '\\"', ''],[ '/', '\\/', 'g']]
+    let l:res = a:text
+    for p in patterns
+        let l:res = substitute(l:res, p[0], p[1], p[2])
+    endfor
+    return l:res
+endfun
+
+" Update header field with the new value
+fun s:update_header_field(field, value)
+    let l:field = s:create_pattern_text(b:comment_char) . '\s*' . s:create_pattern_text(a:field) . '\s*.*'
+    let l:field_add = s:create_pattern_text(b:comment_char) . s:create_pattern_text(a:field) . ' '
+    execute '%s/' . l:field . '/' . l:field_add . s:create_pattern_text(a:value) .'/'
+endfun
+
 " Update Header
 fun s:update_header()
     let l:save_pos = getpos(".")
     " Update file name
     if g:header_field_filename
-        let l:field = substitute(substitute(substitute(substitute(b:comment_char . b:field_file, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', ''), '"', '\\"', '')
-        execute '/' . b:comment_char . b:field_file . '/s@.*$@\="' . l:field . ' " . expand("%s:t")@'
+        call s:update_header_field(b:field_file, expand('%s:t'))
     endif
-    " Update last modified date
+    "" Update last modified date
     if g:header_field_modified_timestamp
-        let l:field = substitute(substitute(substitute(substitute(b:comment_char . b:field_modified_date, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', ''), '"', '\\"', '')
-        silent! execute '/' . b:comment_char . b:field_modified_date . '/s@.*$@\="' . l:field . ' " . strftime("' . g:header_field_timestamp_format . '")@'
+        call s:update_header_field(b:field_modified_date, strftime(g:header_field_timestamp_format))
     endif
-    " Update last modified author
+    "" Update last modified author
     if g:header_field_modified_by && g:header_field_author != ''
         if g:header_field_author_email != ''
             let l:email = ' <' . g:header_field_author_email . '>'
         else
             let l:email = ''
         endif
-        let l:field = substitute(substitute(substitute(substitute(b:comment_char . b:field_modified_by, '\*', '\\\*', ''), '\.', '\\\.', ''), '@', '\\@', ''), '"', '\\"', '')
-        silent! execute '/' . b:comment_char . b:field_modified_by . '/s@.*$@\="' . l:field . ' " . g:header_field_author . l:email@'
+        call s:update_header_field(b:field_modified_by, g:header_field_author . l:email)
     endif
-    echo 'Header was updated succesfully.'
+    "echo 'Header was updated succesfully.'
     call setpos(".", l:save_pos)
 endfun
 

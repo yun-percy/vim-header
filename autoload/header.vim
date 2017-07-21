@@ -1,3 +1,23 @@
+" Author: Paul Kulyk <paul.kulyk@gmail.com>
+" Date: 2017-07-21
+" Last Modified Date: 2017-07-21
+" Last Modified By: Paul Kulyk <paul.kulyk@gmail.com>
+" Author: Paul Kulyk <paul.kulyk@gmail.com>
+" Date: 2017-07-21
+" Last Modified Date: 2017-07-21
+" Last Modified By: Paul Kulyk <paul.kulyk@gmail.com>
+" Author: Paul Kulyk <paul.kulyk@gmail.com>
+" Date: 2017-07-21
+" Last Modified Date: 2017-07-21
+" Last Modified By: Paul Kulyk <paul.kulyk@gmail.com>
+" Author: Paul Kulyk <paul.kulyk@gmail.com>
+" Date: 2017-07-21
+" Last Modified Date: 2017-07-21
+" Last Modified By: Paul Kulyk <paul.kulyk@gmail.com>
+" Author: Paul Kulyk <paul.kulyk@gmail.com>
+" Date: 2017-07-21
+" Last Modified Date: 2017-07-21
+" Last Modified By: Paul Kulyk <paul.kulyk@gmail.com>
 " PROPERTIES AND FUNCTIONS FOR GENERAL PURPOSES
 " ---------------------------------------------
 " Set default global values
@@ -137,6 +157,10 @@ fun s:set_props()
         let b:first_line = '//-'
         let b:first_line_pattern = '//-'
         let b:comment_char = ' '
+    " ----------------------------------
+    elseif b:filetype == 'octave' ||
+          \ b:filetype == 'matlab'
+        let b:comment_char = '%'
     " ----------------------------------
     else
         let b:is_filetype_available = 0

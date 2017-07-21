@@ -113,6 +113,7 @@ Supported filetypes are;
 - jsx
 - lisp
 - lua
+- matlab/octave
 - ocaml
 - php
 - perl

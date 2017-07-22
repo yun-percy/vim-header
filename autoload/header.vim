@@ -138,6 +138,10 @@ fun s:set_props()
         let b:first_line_pattern = '//-'
         let b:comment_char = ' '
     " ----------------------------------
+    elseif b:filetype == 'octave' ||
+          \ b:filetype == 'matlab'
+        let b:comment_char = '%'
+    " ----------------------------------
     else
         let b:is_filetype_available = 0
     endif

@@ -21,4 +21,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Brief author info header
 - License header
 
+## 0.1.1 - 2017-07-21
+### Added
+- Filetype support for matlab/octave
+
 [Unreleased]: https://github.com/alpertuna/vim-header/compare/v0.1.0...HEAD

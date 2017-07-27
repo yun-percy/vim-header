@@ -22,6 +22,9 @@ endif
 if !exists('g:header_field_timestamp_format')
     let g:header_field_timestamp_format = '%d.%m.%Y'
 endif
+if !exists('g:header_cfg_comment_char')
+    let g:header_cfg_comment_char = '#'
+endif
 
 " Path for license files directory
 let s:license_files_dir = expand('<sfile>:p:h:h').'/licensefiles/'
@@ -141,6 +144,9 @@ fun s:set_props()
     elseif b:filetype == 'octave' ||
           \ b:filetype == 'matlab'
         let b:comment_char = '%'
+    " ----------------------------------
+    elseif b:filetype == 'cfg'
+        let b:comment_char = g:header_cfg_comment_char
     " ----------------------------------
     else
         let b:is_filetype_available = 0

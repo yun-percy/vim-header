@@ -93,12 +93,18 @@ let g:header_auto_add_header = 0
 ```
 It disables to add header automatically. Default is 1.
 
+It sets cfg's filetype comment character as this filetype supports multiple set of comment characters (`;`, `//`, `#`, ...). Default is `#`.
+```vim
+let g:header_cfg_comment_char = ';'
+```
+
 Support
 -------
 Supported filetypes are;
 
 - asm
 - c
+- cfg
 - clojure
 - cpp
 - cs

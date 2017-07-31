@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Auto add header support
 - Modified date field
 - Modified date by field
+- New algorithm for updating headers allowing them to be updated within a range (g:header_max_size global option)
 
 ### Fixed
 - Make plugin determine file type for each call to catch new file type if changed

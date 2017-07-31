@@ -1,8 +1,3 @@
-" File: header.vim
-" Author: H.Alper Tuna <halpertuna@gmail.com>
-" Date: 02.08.2017
-" Last Modified Date: 02.08.2017
-" Last Modified By: H.Alper Tuna <halpertuna@gmail.com>
 " PROPERTIES AND FUNCTIONS FOR GENERAL PURPOSES
 " ---------------------------------------------
 " Set default global values
@@ -29,6 +24,9 @@ if !exists('g:header_field_timestamp_format')
 endif
 if !exists('g:header_cfg_comment_char')
     let g:header_cfg_comment_char = '#'
+endif
+if !exists('g:header_max_size')
+    let g:header_max_size = 5
 endif
 
 " Path for license files directory
@@ -262,8 +260,8 @@ endfun
 
 " Update header field with the new value
 fun s:update_header_field(field, value)
-    let l:field = s:create_pattern_text(b:comment_char) . '\s*' . s:create_pattern_text(a:field) . '\s*.*'
-    let l:field_add = s:create_pattern_text(b:comment_char) . s:create_pattern_text(a:field) . ' '
+    let l:field = s:create_pattern_text(a:field) . '\s*.*'
+    let l:field_add = s:create_pattern_text(a:field) . ' '
     execute '%s/' . l:field . '/' . l:field_add . s:create_pattern_text(a:value) .'/'
 endfun
 
@@ -431,6 +429,54 @@ fun s:add_license_header(license_name)
     call setpos(".", l:save_pos)
 endfun
 
+" Check if required headers (ones that are set globally as required)
+" are present from the start of the buffer to the header_size_threshold.
+" ----------------------------------------------------------------------
+" returns 1 if all required headers are present and within the range,
+" otherwise returns 0
+fun s:has_required_headers_in_range(header_size_threshold)
+    let l:save_pos = getpos(".")
+    let l:headers_fields = [] " list holding required headers
+
+    " File header
+    if g:header_field_filename
+        call add(l:headers_fields, b:field_file)
+    endif
+
+    " Author header
+    if g:header_field_author != ''
+        call add(l:headers_fields, b:field_author)
+    endif
+
+    " Date header
+    if g:header_field_timestamp
+        call add(l:headers_fields, b:field_date)
+    endif
+
+    " Last Modified Date header
+    if g:header_field_modified_timestamp
+        call add(l:headers_fields, b:field_modified_date)
+    endif
+
+    " Last Modified By header
+    if g:header_field_modified_by
+        call add(l:headers_fields, b:field_modified_by)
+    endif
+
+    " check if required headers are present and within the range
+    for l:header_field in l:headers_fields
+        let l:header_field_line_nbr = search(l:header_field)
+        if
+            \ l:header_field_line_nbr == 0 ||
+            \ l:header_field_line_nbr > a:header_size_threshold
+            call setpos(".", l:save_pos)
+            return 0
+        endif
+    endfor
+    call setpos(".", l:save_pos)
+    return 1
+endfun
+"
 " MAIN FUNCTION
 " -------------
 " Main function selects header generator to add header
@@ -443,22 +489,18 @@ fun header#add_header(type, license, silent)
 
     " If filetype is available, add header else inform user
     if b:is_filetype_available
-        " If there is already header, update it
-        if a:type == 0
-            let i = 1
-            while i < 10
-                let line = getline(i)
-                if line =~ '^' . substitute(substitute(b:comment_char . b:field_file, '\*', '\\\*', ''), '\.', '\\\.', '')
-                    call s:update_header()
-                    return
-                endif
-                let i = i + 1
-            endwhile
-        endif
+
+        let l:file_contains_headers =
+            \ s:has_required_headers_in_range(g:header_max_size)
 
         " Select header generator
         if a:type == 0
-            call s:add_header()
+            " If there is already header, update it
+            if l:file_contains_headers
+                call s:update_header()
+            else
+                call s:add_header()
+            endif
         elseif a:type == 1
             call s:add_min_header()
         elseif a:type == 2
@@ -466,6 +508,7 @@ fun header#add_header(type, license, silent)
         else
             echo 'There is no "' . a:type . '" type to add header.'
         endif
+
     else
         if a:silent == 1
             return

@@ -1,3 +1,8 @@
+" File: header.vim
+" Author: H.Alper Tuna <halpertuna@gmail.com>
+" Date: 02.08.2017
+" Last Modified Date: 02.08.2017
+" Last Modified By: H.Alper Tuna <halpertuna@gmail.com>
 " PROPERTIES AND FUNCTIONS FOR GENERAL PURPOSES
 " ---------------------------------------------
 " Set default global values
@@ -387,11 +392,6 @@ fun s:add_license_header(license_name)
         call append(l:i+1, b:comment_char_wo_space)
         let l:i += 2
     endif
-    " If filetype supports block comment, close comment
-    if b:block_comment
-        call append(l:i+l:license_line_count, b:comment_end)
-        let l:i += 1
-    endif
 
     " Path to license file
     let l:file_name = s:license_files_dir . a:license_name
@@ -422,6 +422,11 @@ fun s:add_license_header(license_name)
         let l:i += 1
     endwhile
 
+    " If filetype supports block comment, close comment
+    if b:block_comment
+        call append(l:i - 1, b:comment_end)
+        let l:i += 1
+    endif
 
     call setpos(".", l:save_pos)
 endfun

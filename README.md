@@ -98,6 +98,15 @@ It sets cfg's filetype comment character as this filetype supports multiple set 
 let g:header_cfg_comment_char = ';'
 ```
 
+This option sets the range from which vim-header will search for required
+headers (ones sets in global options) to determinate if it should update
+existing headers or add new ones.
+```vim
+let g:header_max_size = 20
+```
+This options is used to prevent text replacement if your file contains text
+matching headers (for instance `File:`). Default is 5. See [#20](https://github.com/alpertuna/vim-header/issues/20#issuecomment-319127330) for more explanations.
+
 Support
 -------
 Supported filetypes are;

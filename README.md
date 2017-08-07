@@ -105,7 +105,7 @@ existing headers or add new ones.
 let g:header_max_size = 20
 ```
 This options is used to prevent text replacement if your file contains text
-matching headers (for instance `File:`). Default is 5. See [#20](https://github.com/alpertuna/vim-header/issues/20#issuecomment-319127330) for more explanations.
+matching headers (for instance `File:`). Default is 7. See [#20](https://github.com/alpertuna/vim-header/issues/20#issuecomment-319127330) for more explanations.
 
 Support
 -------

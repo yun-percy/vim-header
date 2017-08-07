@@ -26,7 +26,7 @@ if !exists('g:header_cfg_comment_char')
     let g:header_cfg_comment_char = '#'
 endif
 if !exists('g:header_max_size')
-    let g:header_max_size = 5
+    let g:header_max_size = 7
 endif
 
 " Path for license files directory

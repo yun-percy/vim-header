@@ -185,89 +185,98 @@ endfun
 " -----------------
 " Generate Header
 fun s:add_header()
-    let l:save_pos = getpos(".")
-    let l:i = 0
+    let save_pos = getpos(".")
+    let i = 0
 
     " If filetype has initial line
     if b:first_line != ''
-        let l:line = search(b:first_line_pattern)
-        if l:line == 0
-            call append(l:i, b:first_line)
-            let l:i += 1
+        let line = search(b:first_line_pattern)
+        if line == 0
+            call append(i, b:first_line)
+            let i += 1
         else
-            let l:i = l:line
+            let i = line
         endif
     endif
     " if has encoding
     if b:encoding != ''
-        call append(l:i, b:encoding)
-        let l:i += 1
+        call append(i, b:encoding)
+        let i += 1
     endif
     " If filetype supports block comment, open comment
     if b:block_comment
-        call append(l:i, b:comment_begin)
-        let l:i += 1
+        call append(i, b:comment_begin)
+        let i += 1
     endif
 
     " Fill user's information
     if g:header_field_filename
-        call append(l:i, b:comment_char . b:field_file . ' ' . expand('%s:t'))
-        let l:i += 1
+        call append(i, b:comment_char . b:field_file . ' ' . expand('%s:t'))
+        let i += 1
     endif
     if g:header_field_author != ''
         if g:header_field_author_email != ''
-            let l:email = ' <' . g:header_field_author_email . '>'
+            let email = ' <' . g:header_field_author_email . '>'
         else
-            let l:email = ''
+            let email = ''
         endif
-        call append(l:i, b:comment_char . b:field_author . ' ' . g:header_field_author . l:email)
-        let l:i += 1
+        call append(i, b:comment_char . b:field_author . ' ' . g:header_field_author . email)
+        let i += 1
     endif
     if g:header_field_timestamp
-        call append(l:i, b:comment_char . b:field_date . ' ' . strftime(g:header_field_timestamp_format))
-        let l:i += 1
+        call append(i, b:comment_char . b:field_date . ' ' . strftime(g:header_field_timestamp_format))
+        let i += 1
     endif
     if g:header_field_modified_timestamp
-        call append(l:i, b:comment_char . b:field_modified_date . ' ' . strftime(g:header_field_timestamp_format))
-        let l:i += 1
+        call append(i, b:comment_char . b:field_modified_date . ' ' . strftime(g:header_field_timestamp_format))
+        let i += 1
     endif
     if g:header_field_modified_by && g:header_field_author != ''
         if g:header_field_author_email != ''
-            let l:email = ' <' . g:header_field_author_email . '>'
+            let email = ' <' . g:header_field_author_email . '>'
         else
-            let l:email = ''
+            let email = ''
         endif
-        call append(l:i, b:comment_char . b:field_modified_by . ' ' . g:header_field_author . l:email)
-        let l:i += 1
+        call append(i, b:comment_char . b:field_modified_by . ' ' . g:header_field_author . email)
+        let i += 1
     endif
 
     " If filetype supports block comment, close comment
     if b:block_comment
-        call append(l:i, b:comment_end)
+        call append(i, b:comment_end)
     endif
-    call setpos(".", l:save_pos)
+    call setpos(".", save_pos)
 endfun
 
 " This will replace characters which needs to be escaped in patterns
-fun s:create_pattern_text(text)
-    let patterns = [['\*', '\\\*', ''],['\.', '\\\.', ''],['@', '\\@', ''],[ '"', '\\"', ''],[ '/', '\\/', 'g']]
-    let l:res = a:text
+fun s:create_pattern_text(text, ...)
+    let search_patterns = [['\*', '\\\*', ''], ['\.', '\\\.', ''], [ '"', '\\"', ''], [ '/', '\\/', 'g']]
+    let replace_patterns = [['\*', '\\\*', ''], ['\.', '\\\.', ''], ['@', '\\@', ''], [ '"', '\\"', ''], [ '/', '\\/', 'g']]
+
+    let for_search_part = a:0 == 1
+    if for_search_part
+      let patterns = search_patterns
+    else
+      let patterns = replace_patterns
+    endif
+
+    let res = a:text
     for p in patterns
-        let l:res = substitute(l:res, p[0], p[1], p[2])
+        let res = substitute(res, p[0], p[1], p[2])
     endfor
-    return l:res
+    return res
 endfun
 
 " Update header field with the new value
 fun s:update_header_field(field, value)
-    let l:field = s:create_pattern_text(a:field) . '\s*.*'
-    let l:field_add = s:create_pattern_text(a:field) . ' '
-    execute '%s/' . l:field . '/' . l:field_add . s:create_pattern_text(a:value) .'/'
+    let field = s:create_pattern_text(a:field, 1) . '\s*.*'
+    let field_add = s:create_pattern_text(a:field) . ' '
+    execute '%s/' . field . '/' . field_add . s:create_pattern_text(a:value) .'/'
 endfun
 
 " Update Header
 fun s:update_header()
-    let l:save_pos = getpos(".")
+    let save_pos = getpos(".")
     " Update file name
     if g:header_field_filename
         call s:update_header_field(b:field_file, expand('%s:t'))
@@ -279,154 +288,154 @@ fun s:update_header()
     "" Update last modified author
     if g:header_field_modified_by && g:header_field_author != ''
         if g:header_field_author_email != ''
-            let l:email = ' <' . g:header_field_author_email . '>'
+            let email = ' <' . g:header_field_author_email . '>'
         else
-            let l:email = ''
+            let email = ''
         endif
-        call s:update_header_field(b:field_modified_by, g:header_field_author . l:email)
+        call s:update_header_field(b:field_modified_by, g:header_field_author . email)
     endif
     "echo 'Header was updated succesfully.'
-    call setpos(".", l:save_pos)
+    call setpos(".", save_pos)
 endfun
 
 " Generate Minified Header
 fun s:add_min_header()
-    let l:save_pos = getpos(".")
-    let l:i = 0
+    let save_pos = getpos(".")
+    let i = 0
 
     " If filetype has initial line
     if b:first_line != ''
-        let l:line = search(b:first_line_pattern)
-        if l:line == 0
-            call append(l:i, b:first_line)
-            let l:i += 1
+        let line = search(b:first_line_pattern)
+        if line == 0
+            call append(i, b:first_line)
+            let i += 1
         else
-            let l:i = l:line
+            let i = line
         endif
     endif
 
     if b:encoding != ''
-        call append(l:i, b:encoding)
-        let l:i += 1
+        call append(i, b:encoding)
+        let i += 1
     endif
 
     " Set comment open char
     if b:block_comment
         if b:min_comment_begin == ''
-            let l:header_line = b:comment_begin
+            let header_line = b:comment_begin
         else
-            let l:header_line = b:min_comment_begin
+            let header_line = b:min_comment_begin
         endif
     else
-        let l:header_line = b:comment_char
+        let header_line = b:comment_char
     endif
 
     " Fill user's information
     if g:header_field_filename
-        let l:header_line .= ' ' . expand('%s:t')
+        let header_line .= ' ' . expand('%s:t')
     endif
     if g:header_field_author != ''
         if g:header_field_author_email != ''
-            let l:email = ' <' . g:header_field_author_email . '>'
+            let email = ' <' . g:header_field_author_email . '>'
         else
-            let l:email = ''
+            let email = ''
         endif
-        let l:header_line .= ' ' . b:field_author . ' "' . g:header_field_author . l:email . '"'
+        let header_line .= ' ' . b:field_author . ' "' . g:header_field_author . email . '"'
     endif
     if g:header_field_timestamp
-        let l:header_line .= ' ' . b:field_date . ' ' . strftime(g:header_field_timestamp_format)
+        let header_line .= ' ' . b:field_date . ' ' . strftime(g:header_field_timestamp_format)
     endif
 
     " If filetype supports block comment, close comment
     if b:block_comment
-        let l:header_line .= ' ' . b:comment_end
+        let header_line .= ' ' . b:comment_end
     endif
 
     " Add line to file
-    call append(l:i, l:header_line)
-    call setpos(".", l:save_pos)
+    call append(i, header_line)
+    call setpos(".", save_pos)
 endfun
 
 " Generate License Header
 fun s:add_license_header(license_name)
-    let l:save_pos = getpos(".")
+    let save_pos = getpos(".")
     " Add other infos
-    let l:i = 0
+    let i = 0
 
     " If filetype has initial line
     if b:first_line != ''
-        let l:line = search(b:first_line_pattern)
-        if l:line == 0
-            call append(l:i, b:first_line)
-            let l:i += 1
+        let line = search(b:first_line_pattern)
+        if line == 0
+            call append(i, b:first_line)
+            let i += 1
         else
-            let l:i = l:line
+            let i = line
         endif
     endif
 
     if b:encoding != ''
-        call append(l:i, b:encoding)
-        let l:i += 1
+        call append(i, b:encoding)
+        let i += 1
     endif
 
     " If filetype supports block comment, open comment
     if b:block_comment
-        call append(l:i, b:comment_begin)
-        let l:i += 1
+        call append(i, b:comment_begin)
+        let i += 1
     endif
 
     " Fill user's information
     if g:header_field_filename
-        call append(l:i, b:comment_char . expand('%s:t'))
-        let l:i += 1
+        call append(i, b:comment_char . expand('%s:t'))
+        let i += 1
     endif
     if g:header_field_author != ''
         if g:header_field_author_email != ''
-            let l:email = ' <' . g:header_field_author_email . '>'
+            let email = ' <' . g:header_field_author_email . '>'
         else
-            let l:email = ''
+            let email = ''
         endif
-        call append(l:i, b:comment_char . 'Copyright (c) ' . strftime('%Y') . ' ' . g:header_field_author . l:email)
-        call append(l:i+1, b:comment_char_wo_space)
-        let l:i += 2
+        call append(i, b:comment_char . 'Copyright (c) ' . strftime('%Y') . ' ' . g:header_field_author . email)
+        call append(i+1, b:comment_char_wo_space)
+        let i += 2
     endif
 
     " Path to license file
-    let l:file_name = s:license_files_dir . a:license_name
+    let file_name = s:license_files_dir . a:license_name
     " If license file is not exists, inform user
-    if !filereadable(l:file_name)
+    if !filereadable(file_name)
         echo 'There is no defined "' . a:license_name . '" license.'
         return
     endif
 
     " Add raw license, and count lines of it
-    let l:license_line_count = -line('$')
-    execute expand(l:i) . 'read ' . expand(l:file_name)
-    let l:license_line_count += line('$')
+    let license_line_count = -line('$')
+    execute expand(i) . 'read ' . expand(file_name)
+    let license_line_count += line('$')
 
-    let l:i += 1
-    let l:license_line_count += l:i
+    let i += 1
+    let license_line_count += i
     " Take raw license into comment
-    while l:i < l:license_line_count
-        let l:line = getline(l:i)
+    while i < license_line_count
+        let line = getline(i)
         " If there is an empty line, avoid putting trailing space
-        if l:line == ''
-            let l:line = b:comment_char_wo_space
+        if line == ''
+            let line = b:comment_char_wo_space
         else
-            let l:line = b:comment_char . l:line
+            let line = b:comment_char . line
         endif
 
-        call setline(l:i,l:line)
-        let l:i += 1
+        call setline(i,line)
+        let i += 1
     endwhile
 
     " If filetype supports block comment, close comment
     if b:block_comment
-        call append(l:i - 1, b:comment_end)
-        let l:i += 1
+        call append(i - 1, b:comment_end)
+        let i += 1
     endif
 
-    call setpos(".", l:save_pos)
+    call setpos(".", save_pos)
 endfun
 
 " Check if required headers (ones that are set globally as required)
@@ -435,45 +444,45 @@ endfun
 " returns 1 if all required headers are present and within the range,
 " otherwise returns 0
 fun s:has_required_headers_in_range(header_size_threshold)
-    let l:save_pos = getpos(".")
-    let l:headers_fields = [] " list holding required headers
+    let save_pos = getpos(".")
+    let headers_fields = [] " list holding required headers
 
     " File header
     if g:header_field_filename
-        call add(l:headers_fields, b:field_file)
+        call add(headers_fields, b:field_file)
     endif
 
     " Author header
     if g:header_field_author != ''
-        call add(l:headers_fields, b:field_author)
+        call add(headers_fields, b:field_author)
     endif
 
     " Date header
     if g:header_field_timestamp
-        call add(l:headers_fields, b:field_date)
+        call add(headers_fields, b:field_date)
     endif
 
     " Last Modified Date header
     if g:header_field_modified_timestamp
-        call add(l:headers_fields, b:field_modified_date)
+        call add(headers_fields, b:field_modified_date)
     endif
 
     " Last Modified By header
     if g:header_field_modified_by
-        call add(l:headers_fields, b:field_modified_by)
+        call add(headers_fields, b:field_modified_by)
     endif
 
     " check if required headers are present and within the range
-    for l:header_field in l:headers_fields
-        let l:header_field_line_nbr = search(l:header_field)
+    for header_field in headers_fields
+        let header_field_line_nbr = search(header_field)
         if
-            \ l:header_field_line_nbr == 0 ||
-            \ l:header_field_line_nbr > a:header_size_threshold
-            call setpos(".", l:save_pos)
+            \ header_field_line_nbr == 0 ||
+            \ header_field_line_nbr > a:header_size_threshold
+            call setpos(".", save_pos)
             return 0
         endif
     endfor
-    call setpos(".", l:save_pos)
+    call setpos(".", save_pos)
     return 1
 endfun
 "
@@ -490,13 +499,13 @@ fun header#add_header(type, license, silent)
     " If filetype is available, add header else inform user
     if b:is_filetype_available
 
-        let l:file_contains_headers =
+        let file_contains_headers =
             \ s:has_required_headers_in_range(g:header_max_size)
 
         " Select header generator
         if a:type == 0
             " If there is already header, update it
-            if l:file_contains_headers
+            if file_contains_headers
                 call s:update_header()
             else
                 call s:add_header()
@@ -515,10 +524,10 @@ fun header#add_header(type, license, silent)
         endif
 
         if b:filetype == ''
-            let l:filetype = 'this'
+            let filetype = 'this'
         else
-            let l:filetype = '"' . b:filetype . '"'
+            let filetype = '"' . b:filetype . '"'
         endif
-        echo 'No defined comment syntax for ' . l:filetype . ' filetype.'
+        echo 'No defined comment syntax for ' . filetype . ' filetype.'
     endif
 endfun

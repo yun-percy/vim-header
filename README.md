@@ -136,6 +136,7 @@ Supported filetypes are;
 - pug
 - python
 - ruby
+- rust
 - sass
 - scala
 - scheme

@@ -92,18 +92,20 @@ It sets timestamp format for your locale. Default is '%d.%m.%Y'.
 let g:header_auto_add_header = 0
 ```
 It disables to add header automatically. Default is 1.
-
-It sets cfg's filetype comment character as this filetype supports multiple set of comment characters (`;`, `//`, `#`, ...). Default is `#`.
+```vim
+let g:align_headers = 1
+```
+It aligns headers' values. Default is 0.
 ```vim
 let g:header_cfg_comment_char = ';'
 ```
-
-This option sets the range from which vim-header will search for required
-headers (ones sets in global options) to determinate if it should update
-existing headers or add new ones.
+It sets cfg's filetype comment character as this filetype supports multiple set of comment characters (`;`, `//`, `#`, ...). Default is `#`.
 ```vim
 let g:header_max_size = 20
 ```
+This option sets the range from which vim-header will search for required
+headers (ones sets in global options) to determinate if it should update
+existing headers or add new ones.
 This options is used to prevent text replacement if your file contains text
 matching headers (for instance `File:`). Default is 7. See [#20](https://github.com/alpertuna/vim-header/issues/20#issuecomment-319127330) for more explanations.
 

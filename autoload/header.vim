@@ -28,6 +28,9 @@ endif
 if !exists('g:header_max_size')
     let g:header_max_size = 7
 endif
+if !exists('g:align_headers')
+    let g:align_headers = 1
+endif
 
 " Path for license files directory
 let s:license_files_dir = expand('<sfile>:p:h:h').'/licensefiles/'
@@ -47,11 +50,12 @@ fun s:set_props()
     let b:comment_char = '' " Comment char, or for block comment trailing char of body
     let b:auto_space_after_char = 1 " Put auto space after comment char, if line is not empty
     " Field placeholders according to doc comment syntax, if available
-    let b:field_file = 'File:'
-    let b:field_author = 'Author:'
-    let b:field_date = 'Date:'
-    let b:field_modified_date = 'Last Modified Date:'
-    let b:field_modified_by= 'Last Modified By:'
+    let b:field_file = 'File'
+    let b:field_author = 'Author'
+    let b:field_date = 'Date'
+    let b:field_modified_date = 'Last Modified Date'
+    let b:field_modified_by = 'Last Modified By'
+    let b:field_separator = ':'
 
     " Setting Values for Languages
     if
@@ -179,6 +183,9 @@ fun s:set_props()
     if b:auto_space_after_char
         let b:comment_char .= ' '
     endif
+
+    " Headers fetched from current configuration
+    let b:user_headers = s:get_user_headers()
 endfun
 
 " HEADER GENERATORS
@@ -268,10 +275,19 @@ fun s:create_pattern_text(text, ...)
 endfun
 
 " Update header field with the new value
-fun s:update_header_field(field, value)
-    let field = s:create_pattern_text(a:field, 1) . '\s*.*'
+fun s:update_header_field_and_value(field, value)
+    let field_without_spaces = substitute(a:field, '\s*:$', '', '')
+    let field = s:create_pattern_text(field_without_spaces, 1) . '\s*.*'
     let field_add = s:create_pattern_text(a:field) . ' '
     execute '%s/' . field . '/' . field_add . s:create_pattern_text(a:value) .'/'
+endfun
+
+" Update header field without changing it's value
+" Used to switch between aligned and non-aligned headers for headers
+" who have fixed values (i.e File...)
+fun s:update_header_field(field)
+    let l:field_without_spaces = substitute(a:field, '\s*:$', '\\s*.*:', '')
+    execute '%s/' . l:field_without_spaces . '/' . a:field . '/'
 endfun
 
 " Update Header
@@ -279,11 +295,19 @@ fun s:update_header()
     let save_pos = getpos(".")
     " Update file name
     if g:header_field_filename
-        call s:update_header_field(b:field_file, expand('%s:t'))
+        call s:update_header_field_and_value(b:field_file, expand('%s:t'))
+    endif
+    "" Update author field
+    if g:header_field_author != ''
+        call s:update_header_field(b:field_author)
+    endif
+    "" Update date field
+    if g:header_field_timestamp
+        call s:update_header_field(b:field_date)
     endif
     "" Update last modified date
     if g:header_field_modified_timestamp
-        call s:update_header_field(b:field_modified_date, strftime(g:header_field_timestamp_format))
+        call s:update_header_field_and_value(b:field_modified_date, strftime(g:header_field_timestamp_format))
     endif
     "" Update last modified author
     if g:header_field_modified_by && g:header_field_author != ''
@@ -292,7 +316,7 @@ fun s:update_header()
         else
             let email = ''
         endif
-        call s:update_header_field(b:field_modified_by, g:header_field_author . email)
+        call s:update_header_field_and_value(b:field_modified_by, g:header_field_author . email)
     endif
     "echo 'Header was updated succesfully.'
     call setpos(".", save_pos)
@@ -438,14 +462,9 @@ fun s:add_license_header(license_name)
     call setpos(".", save_pos)
 endfun
 
-" Check if required headers (ones that are set globally as required)
-" are present from the start of the buffer to the header_size_threshold.
-" ----------------------------------------------------------------------
-" returns 1 if all required headers are present and within the range,
-" otherwise returns 0
-fun s:has_required_headers_in_range(header_size_threshold)
-    let save_pos = getpos(".")
-    let headers_fields = [] " list holding required headers
+" Get headers either set by the user or either by defaults
+fun s:get_user_headers()
+    let l:headers_fields = [] " list holding required headers
 
     " File header
     if g:header_field_filename
@@ -471,6 +490,84 @@ fun s:has_required_headers_in_range(header_size_threshold)
     if g:header_field_modified_by
         call add(headers_fields, b:field_modified_by)
     endif
+
+    return l:headers_fields
+endfun
+
+" Compare two strings from their char length in bytes
+" This returns longer string first
+func Sort_longer_str(str1, str2)
+    return strchars(a:str2) - strchars(a:str1)
+endfunc
+
+" Get longer header size in chars from active ones
+fun s:get_longer_header(headers)
+    let l:headers_sorted_by_length = sort(a:headers, "Sort_longer_str")
+    let l:longer_header = get(l:headers_sorted_by_length, 0)
+    return l:longer_header
+endfun
+
+" Right pad header to align it to the longer one
+fun s:align_field_with_spaces(field, longer_header_length)
+    let l:field_length = strchars(a:field)
+    let l:right_padding = a:longer_header_length - l:field_length
+    let l:spaces = repeat(' ', l:right_padding)
+    return a:field . l:spaces
+endfun
+
+" Update header fields to the correct value in case they should be aligned
+" or not.
+fun s:update_fields(longer_header_length)
+
+    if match(b:user_headers, b:field_file) != -1
+        if g:align_headers
+            let b:field_file =
+                \ s:align_field_with_spaces(b:field_file, a:longer_header_length)
+        endif
+        let b:field_file = b:field_file . b:field_separator
+    endif
+
+    if match(b:user_headers, b:field_author) != -1
+        if g:align_headers
+            let b:field_author =
+                \ s:align_field_with_spaces(b:field_author, a:longer_header_length)
+        endif
+        let b:field_author = b:field_author . b:field_separator
+    endif
+
+    if match(b:user_headers, b:field_date) != -1
+        if g:align_headers
+            let b:field_date =
+                \ s:align_field_with_spaces(b:field_date, a:longer_header_length)
+        endif
+        let b:field_date = b:field_date . b:field_separator
+    endif
+
+    if match(b:user_headers, b:field_modified_date) != -1
+        if g:align_headers
+            let b:field_modified_date =
+                \ s:align_field_with_spaces(b:field_modified_date, a:longer_header_length)
+        endif
+        let b:field_modified_date = b:field_modified_date . b:field_separator
+    endif
+
+    if match(b:user_headers, b:field_modified_by) != -1
+        if g:align_headers
+            let b:field_modified_by =
+                \ s:align_field_with_spaces(b:field_modified_by, a:longer_header_length)
+        endif
+        let b:field_modified_by = b:field_modified_by . b:field_separator
+    endif
+endfun
+
+" Check if required headers (ones that are set globally as required)
+" are present from the start of the buffer to the header_size_threshold.
+" ----------------------------------------------------------------------
+" returns 1 if all required headers are present and within the range,
+" otherwise returns 0
+fun s:has_required_headers_in_range(header_size_threshold)
+    let l:save_pos = getpos(".")
+    let l:headers_fields = b:user_headers
 
     " check if required headers are present and within the range
     for header_field in headers_fields
@@ -504,6 +601,10 @@ fun header#add_header(type, license, silent)
 
         " Select header generator
         if a:type == 0
+
+            let l:longer_header_length = strchars(s:get_longer_header(b:user_headers))
+            call s:update_fields(l:longer_header_length)
+
             " If there is already header, update it
             if file_contains_headers
                 call s:update_header()

@@ -28,8 +28,8 @@ endif
 if !exists('g:header_max_size')
     let g:header_max_size = 7
 endif
-if !exists('g:align_headers')
-    let g:align_headers = 1
+if !exists('g:header_alignment')
+    let g:header_alignment = 1
 endif
 
 " Path for license files directory
@@ -520,7 +520,7 @@ endfun
 fun s:update_fields(longer_header_length)
 
     if match(b:user_headers, b:field_file) != -1
-        if g:align_headers
+        if g:header_alignment
             let b:field_file =
                 \ s:align_field_with_spaces(b:field_file, a:longer_header_length)
         endif
@@ -528,7 +528,7 @@ fun s:update_fields(longer_header_length)
     endif
 
     if match(b:user_headers, b:field_author) != -1
-        if g:align_headers
+        if g:header_alignment
             let b:field_author =
                 \ s:align_field_with_spaces(b:field_author, a:longer_header_length)
         endif
@@ -536,7 +536,7 @@ fun s:update_fields(longer_header_length)
     endif
 
     if match(b:user_headers, b:field_date) != -1
-        if g:align_headers
+        if g:header_alignment
             let b:field_date =
                 \ s:align_field_with_spaces(b:field_date, a:longer_header_length)
         endif
@@ -544,7 +544,7 @@ fun s:update_fields(longer_header_length)
     endif
 
     if match(b:user_headers, b:field_modified_date) != -1
-        if g:align_headers
+        if g:header_alignment
             let b:field_modified_date =
                 \ s:align_field_with_spaces(b:field_modified_date, a:longer_header_length)
         endif
@@ -552,7 +552,7 @@ fun s:update_fields(longer_header_length)
     endif
 
     if match(b:user_headers, b:field_modified_by) != -1
-        if g:align_headers
+        if g:header_alignment
             let b:field_modified_by =
                 \ s:align_field_with_spaces(b:field_modified_by, a:longer_header_length)
         endif

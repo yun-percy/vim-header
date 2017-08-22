@@ -93,7 +93,7 @@ let g:header_auto_add_header = 0
 ```
 It disables to add header automatically. Default is 1.
 ```vim
-let g:align_headers = 1
+let g:header_alignment = 1
 ```
 It aligns headers' values. Default is 0.
 ```vim
@@ -117,15 +117,7 @@ Supported filetypes are;
 - c
 - cfg
 - clojure
-- cpp
-- cs
-- css
-- elixir
-- erlang
-- go
-- groovy
-- haskel
-- java
+- cpp cs css elixir erlang go groovy haskel java
 - javascript
 - jsx
 - lisp

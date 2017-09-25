@@ -155,6 +155,11 @@ fun s:set_props()
     elseif b:filetype == 'cfg'
         let b:comment_char = g:header_cfg_comment_char
     " ----------------------------------
+    elseif b:filetype == 'r'
+        let b:first_line = '#!/usr/bin/R'
+        let b:first_line_pattern = '#!\s*/usr/bin/r'
+        let b:comment_char = '#'
+    " ----------------------------------
     else
         let b:is_filetype_available = 0
     endif

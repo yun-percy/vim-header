@@ -156,7 +156,7 @@ fun s:set_props()
         let b:comment_char = g:header_cfg_comment_char
     " ----------------------------------
     elseif b:filetype == 'r'
-        let b:first_line = '#!/usr/bin/R'
+        let b:first_line = '#!/usr/bin/Rscript'
         let b:first_line_pattern = '#!\s*/usr/bin/r'
         let b:comment_char = '#'
     " ----------------------------------

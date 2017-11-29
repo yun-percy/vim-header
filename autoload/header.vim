@@ -284,7 +284,7 @@ fun s:update_header_field_and_value(field, value)
     let field_without_spaces = substitute(a:field, '\s*:$', '', '')
     let field = s:create_pattern_text(field_without_spaces, 1) . '\s*.*'
     let field_add = s:create_pattern_text(a:field) . ' '
-    execute '%s/' . field . '/' . field_add . s:create_pattern_text(a:value) .'/'
+    execute '0,'. g:header_max_size .'s/' . field . '/' . field_add . s:create_pattern_text(a:value) .'/' 
 endfun
 
 " Update header field without changing it's value
@@ -292,7 +292,7 @@ endfun
 " who have fixed values (i.e File...)
 fun s:update_header_field(field)
     let l:field_without_spaces = substitute(a:field, '\s*:$', '\\s*.*:', '')
-    execute '%s/' . l:field_without_spaces . '/' . a:field . '/'
+    execute '0,'. g:header_max_size .'s/' . l:field_without_spaces . '/' . a:field . '/'
 endfun
 
 " Update Header

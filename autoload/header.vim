@@ -104,6 +104,10 @@ fun s:set_props()
         let b:first_line = '#!/bin/bash'
         let b:first_line_pattern = '#!\s*/bin/bash'
         let b:comment_char = '#'
+    elseif b:filetype == 'zsh'
+        let b:first_line = '#!/bin/zsh'
+        let b:first_line_pattern = '#!\s*/bin/zsh'
+        let b:comment_char = '#'
     " ----------------------------------
     elseif b:filetype == "ruby" ||
           \ b:filetype == "elixir" ||

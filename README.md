@@ -79,6 +79,7 @@ Adding Licenses
 - `:AddMITLicense` Adds **MIT License**
 - `:AddApacheLicense` Adds **Apache License**
 - `:AddGNULicense` Adds **GNU License**
+- `:AddWTFPLLicense` Adds **WTFPL License**
 
 [⬆ back to top](#table-of-contents)
 
@@ -257,6 +258,7 @@ And licenses are:
 - MIT
 - Apache
 - GNU
+- WTFPL
 
 If you want more filetypes or licenses, you can open issues or provide any
 improvements by pull requests on

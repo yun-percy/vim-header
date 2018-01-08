@@ -231,9 +231,18 @@ Supported filetypes are:
 - c
 - cfg
 - clojure
-- cpp cs css elixir erlang go groovy haskel java
+- cpp
+- cs
+- css
+- elixir
+- erlang
+- go
+- groovy
+- haskel
+- java
 - javascript
 - jsx
+- less
 - lisp
 - lua
 - matlab/octave

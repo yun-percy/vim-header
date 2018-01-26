@@ -67,6 +67,7 @@ fun s:set_props()
         \ b:filetype == 'scala' ||
         \ b:filetype == 'javascript' ||
         \ b:filetype == 'javascript.jsx' ||
+        \ b:filetype == 'typescript' ||
         \ b:filetype == 'less' ||
         \ b:filetype == 'php' ||
         \ b:filetype == 'go' ||
@@ -180,7 +181,8 @@ fun s:set_props()
     endif
     if
         \ b:filetype == 'javascript' ||
-        \ b:filetype == 'javascript.jsx'
+        \ b:filetype == 'javascript.jsx' ||
+        \ b:filetype == 'typescript'
 
         let b:min_comment_begin = '/*!'
         let b:field_file = '@file'

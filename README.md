@@ -123,10 +123,10 @@ g:header_alignment
 ------------------
 
 ```vim
-let g:header_alignment = 1
+let g:header_alignment = 0
 ```
 
-Aligns headers' values. **0 by default**.
+Aligns headers' values. **1 by default**.
 
 g:header_max_size
 -----------------

@@ -299,7 +299,7 @@ endfun
 " Used to switch between aligned and non-aligned headers for headers
 " who have fixed values (i.e File...)
 fun s:update_header_field(field)
-    let l:field_without_spaces = substitute(a:field, '\s*:$', '\\s*.*:', '')
+    let l:field_without_spaces = substitute(a:field, '\s*:$', '\\s*[^:]*:', '')
     execute '0,'. g:header_max_size .'s/' . l:field_without_spaces . '/' . a:field . '/'
 endfun
 

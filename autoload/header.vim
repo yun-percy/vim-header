@@ -4,6 +4,9 @@
 if !exists('g:header_field_filename')
     let g:header_field_filename = 1
 endif
+if !exists('g:header_field_license_id')
+    let g:header_field_license_id = ''
+endif
 if !exists('g:header_field_author')
     let g:header_field_author = ''
 endif
@@ -51,6 +54,7 @@ fun s:set_props()
     let b:auto_space_after_char = 1 " Put auto space after comment char, if line is not empty
     " Field placeholders according to doc comment syntax, if available
     let b:field_file = 'File'
+    let b:field_license_id = 'License'
     let b:field_author = 'Author'
     let b:field_date = 'Date'
     let b:field_modified_date = 'Last Modified Date'
@@ -234,6 +238,10 @@ fun s:add_header()
         call append(i, b:comment_char . b:field_file . ' ' . expand('%s:t'))
         let i += 1
     endif
+    if g:header_field_license_id != ''
+        call append(i, b:comment_char . b:field_license_id . ' ' . g:header_field_license_id)
+        let i += 1
+    endif
     if g:header_field_author != ''
         if g:header_field_author_email != ''
             let email = ' <' . g:header_field_author_email . '>'
@@ -309,6 +317,10 @@ fun s:update_header()
     " Update file name
     if g:header_field_filename
         call s:update_header_field_and_value(b:field_file, expand('%s:t'))
+    endif
+    "" Update field license id
+    if g:header_field_license_id != ''
+        call s:update_header_field(b:field_license_id)
     endif
     "" Update author field
     if g:header_field_author != ''
@@ -484,6 +496,11 @@ fun s:get_user_headers()
         call add(headers_fields, b:field_file)
     endif
 
+    " License id
+    if g:header_field_license_id != ''
+        call add(headers_fields, b:field_license_id)
+    endif
+
     " Author header
     if g:header_field_author != ''
         call add(headers_fields, b:field_author)
@@ -538,6 +555,14 @@ fun s:update_fields(longer_header_length)
                 \ s:align_field_with_spaces(b:field_file, a:longer_header_length)
         endif
         let b:field_file = b:field_file . b:field_separator
+    endif
+
+    if match(b:user_headers, b:field_license_id) != -1
+        if g:header_alignment
+            let b:field_license_id =
+                \ s:align_field_with_spaces(b:field_license_id, a:longer_header_length)
+        endif
+        let b:field_license_id = b:field_license_id . b:field_separator
     endif
 
     if match(b:user_headers, b:field_author) != -1

@@ -261,6 +261,7 @@ Supported filetypes are:
 - tmux
 - vim
 - xdefaults
+- yaml
 
 And licenses are:
 

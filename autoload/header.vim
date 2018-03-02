@@ -113,7 +113,8 @@ fun s:set_props()
     " ----------------------------------
     elseif b:filetype == "ruby" ||
           \ b:filetype == "elixir" ||
-          \ b:filetype == "tmux"
+          \ b:filetype == "tmux" ||
+          \ b:filetype == "yaml"
         let b:comment_char = '#'
     " ----------------------------------
     elseif b:filetype == "erlang" ||

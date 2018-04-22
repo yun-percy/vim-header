@@ -72,7 +72,8 @@ fun s:set_props()
         \ b:filetype == 'php' ||
         \ b:filetype == 'go' ||
         \ b:filetype == 'sass' ||
-        \ b:filetype == 'rust'
+        \ b:filetype == 'rust' ||
+        \ b:filetype == 'verilog'
 
         let b:block_comment = 1
         let b:comment_char = ' *'

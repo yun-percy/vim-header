@@ -260,6 +260,7 @@ Supported filetypes are:
 - sh
 - tmux
 - vhdl
+- verilog
 - vim
 - xdefaults
 - yaml

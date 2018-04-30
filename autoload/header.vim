@@ -168,6 +168,12 @@ fun s:set_props()
         let b:first_line_pattern = '#!\s*/usr/bin/r'
         let b:comment_char = '#'
     " ----------------------------------
+    elseif b:filetype == 'vhdl'
+        let b:comment_char = '--'
+        " Support for VHDL 2008 block comments
+        let b:comment_begin = '/*'
+        let b:comment_end = '*/'
+    " ----------------------------------
     else
         let b:is_filetype_available = 0
     endif

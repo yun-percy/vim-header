@@ -105,6 +105,7 @@ Settings related to **headers' fields**:
 - [`g:header_field_modified_timestamp`](#gheader_field_modified_timestamp)
 - [`g:header_field_modified_by`](#gheader_field_modified_by)
 - [`g:header_field_timestamp_format`](#gheader_field_timestamp_format)
+- [`g:header_field_license_id`](#gheader_field_license_id)
 
 Settings related to **supported filetypes**:
 
@@ -211,6 +212,15 @@ let g:header_field_timestamp_format = '%d.%m.%Y'
 ```
 
 Sets timestamp format. **`%d.%m.%Y` by default**.
+
+g:header_field_license_id
+-------------------------------
+
+```vim
+let g:header_field_license_id = 'BSD-3-Clause'
+```
+
+Sets license field. **'' by default**.
 
 g:header_cfg_comment_char
 -------------------------

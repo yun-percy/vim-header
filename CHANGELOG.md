@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Auto add header support
 - Modified date field
 - Modified date by field
+- License field
 - New algorithm for updating headers allowing them to be updated within a range (g:header_max_size global option)
 - Align headers values to longer header name(g:header_alignment)
 

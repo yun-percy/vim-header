@@ -177,6 +177,11 @@ fun s:set_props()
         " Support for VHDL 2008 block comments
         let b:comment_begin = '/*'
         let b:comment_end = '*/'
+        " ----------------------------------
+    elseif b:filetype == 'rst'
+        let b:comment_begin = '.. '
+        let b:comment_char = '   '
+        let b:comment_end = '\n'
     " ----------------------------------
     else
         let b:is_filetype_available = 0

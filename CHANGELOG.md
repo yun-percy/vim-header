@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - This CHANGELOG file
-- Filetype support for grovy, haskel, lua, jsx,  sass, html, tmux, go, scala, ruby, elixir, erlang, plaintex, lisp, scheme, asm, clojure, cs, xdefaults, ocaml, pug, rust, matlab/octave, cfg, yaml, verilog, vhdl
+- Filetype support for grovy, haskel, lua, jsx,  sass, html, tmux, go, scala, ruby, elixir, erlang, plaintex, lisp, scheme, asm, clojure, cs, xdefaults, ocaml, pug, rust, matlab/octave, cfg, yaml, verilog, vhdl, rst
 - Control for auto space after comment char according to language.
 - Specific field placeholders according to file type
 - Auto add header support

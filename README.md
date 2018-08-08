@@ -262,6 +262,7 @@ Supported filetypes are:
 - plaintex
 - pug
 - python
+- rst
 - ruby
 - rust
 - sass

@@ -311,7 +311,7 @@ fun s:update_header_field_and_value(field, value)
     let field_without_spaces = substitute(a:field, '\s*:$', '', '')
     let field = s:create_pattern_text(field_without_spaces, 1) . '\s*.*'
     let field_add = s:create_pattern_text(a:field) . ' '
-    execute '0,'. g:header_max_size .'s/' . field . '/' . field_add . s:create_pattern_text(a:value) .'/' 
+    execute '0,'. g:header_max_size .'s/' . field . '/' . field_add . s:create_pattern_text(a:value) .'/'
 endfun
 
 " Update header field without changing it's value
@@ -617,6 +617,7 @@ endfun
 fun s:has_required_headers_in_range(header_size_threshold)
     let l:save_pos = getpos(".")
     let l:headers_fields = b:user_headers
+    call setpos(".", [0, 0, 0, 0])
 
     " check if required headers are present and within the range
     for header_field in headers_fields
@@ -627,6 +628,7 @@ fun s:has_required_headers_in_range(header_size_threshold)
             call setpos(".", save_pos)
             return 0
         endif
+        call setpos(".", [0, 0, 0, 0])
     endfor
     call setpos(".", save_pos)
     return 1

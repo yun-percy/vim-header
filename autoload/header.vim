@@ -102,8 +102,8 @@ fun s:set_props()
         let b:comment_char = '#'
     " ----------------------------------
     elseif b:filetype == 'python'
-        let b:first_line = '#!/usr/bin/env python'
-        let b:first_line_pattern = '#!\s*/usr/bin/env\s* python'
+        let b:first_line = '#!/usr/bin/env python3'
+        let b:first_line_pattern = '#!\s*/usr/bin/env\s* python3'
         let b:encoding = '# -*- coding: utf-8 -*-'
         let b:comment_char = '#'
     " ----------------------------------

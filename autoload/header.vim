@@ -1,6 +1,9 @@
 " PROPERTIES AND FUNCTIONS FOR GENERAL PURPOSES
 " ---------------------------------------------
 " Set default global values
+if !exists('g:header_field_copyright')
+    let g:header_field_copyright = ''
+endif
 if !exists('g:header_field_filename')
     let g:header_field_filename = 1
 endif
@@ -245,6 +248,10 @@ fun s:add_header()
     endif
 
     " Fill user's information
+    if g:header_field_copyright != ''
+      call append(i, b:comment_char. g:header_field_copyright)
+      let i += 1
+    endif
     if g:header_field_filename
         call append(i, b:comment_char . b:field_file . ' ' . expand('%s:t'))
         let i += 1

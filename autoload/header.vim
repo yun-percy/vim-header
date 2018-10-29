@@ -161,7 +161,8 @@ fun s:set_props()
         let b:comment_char = ' '
     " ----------------------------------
     elseif b:filetype == 'octave' ||
-          \ b:filetype == 'matlab'
+          \ b:filetype == 'matlab' ||
+          \ b:filetype == 'tex'
         let b:comment_char = '%'
     " ----------------------------------
     elseif b:filetype == 'cfg'

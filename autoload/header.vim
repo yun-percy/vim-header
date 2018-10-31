@@ -4,6 +4,9 @@
 if !exists('g:header_field_filename')
     let g:header_field_filename = 1
 endif
+if !exists('g:header_field_filename_path')
+    let g:header_field_filename_path = 0
+endif
 if !exists('g:header_field_license_id')
     let g:header_field_license_id = ''
 endif
@@ -246,7 +249,11 @@ fun s:add_header()
 
     " Fill user's information
     if g:header_field_filename
-        call append(i, b:comment_char . b:field_file . ' ' . expand('%s:t'))
+        if g:header_field_filename_path
+            call append(i, b:comment_char . b:field_file . ' ' . expand('%s:t'))
+        else
+            call append(i, b:comment_char . b:field_file . ' ' . split(expand('%s:t'),'/')[-1])
+        endif
         let i += 1
     endif
     if g:header_field_license_id != ''
@@ -327,7 +334,11 @@ fun s:update_header()
     let save_pos = getpos(".")
     " Update file name
     if g:header_field_filename
-        call s:update_header_field_and_value(b:field_file, expand('%s:t'))
+        if g:header_field_filename_path
+            call s:update_header_field_and_value(b:field_file, expand('%s:t'))
+        else
+            call s:update_header_field_and_value(b:field_file, split(expand('%s:t'),'/')[-1])
+        endif
     endif
     "" Update field license id
     if g:header_field_license_id != ''
@@ -392,7 +403,11 @@ fun s:add_min_header()
 
     " Fill user's information
     if g:header_field_filename
-        let header_line .= ' ' . expand('%s:t')
+        if g:header_field_filename_path
+            let header_line .= ' ' . expand('%s:t')
+        else
+            let header_line .= ' ' . split(expand('%s:t'),'/')[-1]
+        endif
     endif
     if g:header_field_author != ''
         if g:header_field_author_email != ''

@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - This CHANGELOG file
-- Filetype support for grovy, haskel, lua, jsx,  sass, html, tmux, go, scala, ruby, elixir, erlang, plaintex, lisp, scheme, asm, clojure, cs, xdefaults, ocaml, pug, rust, matlab/octave, cfg, yaml, verilog, vhdl, rst
+- Filetype support for grovy, haskel, lua, jsx,  sass, html, tmux, go, scala, ruby, elixir, erlang, plaintex, lisp, scheme, asm, clojure, cs, xdefaults, ocaml, pug, rust, matlab/octave, cfg, yaml, verilog, vhdl, rst, tex
 - Control for auto space after comment char according to language.
 - Specific field placeholders according to file type
 - Auto add header support
@@ -15,6 +15,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - New algorithm for updating headers allowing them to be updated within a range (g:header_max_size global option)
 - Align headers values to longer header name(g:header_alignment)
 - Python path now points to python3
+- File name without relative path mode
+- Custom copyright line
 
 ### Fixed
 - Make plugin determine file type for each call to catch new file type if changed

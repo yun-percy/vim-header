@@ -99,8 +99,10 @@ Settings related to **headers**:
 Settings related to **headers' fields**:
 
 - [`g:header_field_filename`](#gheader_field_filename)
+- [`g:header_field_filename_path`](#gheader_field_filename_path)
 - [`g:header_field_author`](#gheader_field_author)
 - [`g:header_field_author_email`](#gheader_field_author_email)
+- [`g:header_field_copyright`](#gheader_field_copyright)
 - [`g:header_field_timestamp`](#gheader_field_timestamp)
 - [`g:header_field_modified_timestamp`](#gheader_field_modified_timestamp)
 - [`g:header_field_modified_by`](#gheader_field_modified_by)
@@ -154,12 +156,22 @@ let g:header_field_filename = 0
 
 Toggles `File:` header field. **1 by default**.
 
+g:header_field_filename_path
+----------------------------
+
+```vim
+let g:header_field_filename_path = 1
+```
+
+Uses filename instead of full path in `File:` header field. **0 by default**.
+
 g:header_field_author
 ---------------------
 
 ```vim
 let g:header_field_author = 'Your Name'
 ```
+
 Sets defined value for `Author:` and `Last Modified By:` fields. Empty string
 disables it. **'' by default**.
 
@@ -174,6 +186,14 @@ Adds defined value surrounded by `<`, `>` after author name in `Author:` and
 `Last Modified By:` fields. `g:header_field_author` must be set and not be empty
 in order to add email to its value. Empty string disables adding email value.
 **'' by default**.
+
+g:header_field_copyright
+------------------------
+```vim
+let g:header_field_copyright = ''
+```
+
+Adds custom copyright lines. **'' by default**.
 
 g:header_field_timestamp
 ------------------------
@@ -269,6 +289,7 @@ Supported filetypes are:
 - scala
 - scheme
 - sh
+- tex
 - tmux
 - vhdl
 - verilog

@@ -40,6 +40,12 @@ endif
 if !exists('g:header_alignment')
     let g:header_alignment = 1
 endif
+if !exists('g:header_copyright_declare_toggle)
+    let g:header_copyright_declare_toggle= 0
+endif
+if !exists('g:header_copyright_declare)
+    let g:header_copyright_declare_toggle= 0
+endif
 
 " Path for license files directory
 let s:license_files_dir = expand('<sfile>:p:h:h').'/licensefiles/'
@@ -250,12 +256,17 @@ fun s:add_header()
         call append(i, b:comment_begin)
         let i += 1
     endif
-
-    " Fill user's information
-    if g:header_field_copyright != ''
-      call append(i, b:comment_char. g:header_field_copyright)
-      let i += 1
+    " Add Author
+    if g:header_field_author != ''
+        if g:header_field_author_email != ''
+            let email = ' <' . g:header_field_author_email . '>'
+        else
+            let email = ''
+        endif
+        call append(i, b:comment_char . b:field_author . ' ' . g:header_field_author . email)
+        let i += 1
     endif
+    " File Name
     if g:header_field_filename
         if g:header_field_filename_path
             call append(i, b:comment_char . b:field_file . ' ' . expand('%s:t'))
@@ -268,15 +279,7 @@ fun s:add_header()
         call append(i, b:comment_char . b:field_license_id . ' ' . g:header_field_license_id)
         let i += 1
     endif
-    if g:header_field_author != ''
-        if g:header_field_author_email != ''
-            let email = ' <' . g:header_field_author_email . '>'
-        else
-            let email = ''
-        endif
-        call append(i, b:comment_char . b:field_author . ' ' . g:header_field_author . email)
-        let i += 1
-    endif
+
     if g:header_field_timestamp
         call append(i, b:comment_char . b:field_date . ' ' . strftime(g:header_field_timestamp_format))
         let i += 1
@@ -291,8 +294,14 @@ fun s:add_header()
         else
             let email = ''
         endif
-        call append(i, b:comment_char . b:field_modified_by . ' ' . g:header_field_author . email)
+        call append(i, b:comment_char . b:field_modified_by . ' ' . g:header_field_author )
         let i += 1
+    endif
+    " Fill user's information
+    if g:header_field_copyright != ''
+      let copyright='Copyright (c) ' . strftime('%Y') .', ' . g:header_field_copyright . ' All rights reserved'
+      call append(i, b:comment_char. copyright)
+      let i += 1
     endif
 
     " If filetype supports block comment, close comment

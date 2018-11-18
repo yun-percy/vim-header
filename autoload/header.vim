@@ -93,7 +93,7 @@ fun s:set_props()
 
         let b:block_comment = 1
         let b:comment_char = ' *'
-        let b:comment_begin = '/**'
+        let b:comment_begin = '/*'
         let b:comment_end = ' */'
     " ----------------------------------
     elseif b:filetype == 'haskell'
@@ -114,8 +114,8 @@ fun s:set_props()
         let b:comment_char = '#'
     " ----------------------------------
     elseif b:filetype == 'python'
-        let b:first_line = '#!/usr/bin/env python3'
-        let b:first_line_pattern = '#!\s*/usr/bin/env\s* python3'
+        let b:first_line = '#!/usr/bin/env python'
+        let b:first_line_pattern = '#!\s*/usr/bin/env\s* python'
         let b:encoding = '# -*- coding: utf-8 -*-'
         let b:comment_char = '#'
     " ----------------------------------
@@ -263,7 +263,7 @@ fun s:add_header()
         else
             let email = ''
         endif
-        call append(i, b:comment_char . b:field_author . ' ' . g:header_field_author . email)
+        call append(i, b:comment_char . b:field_author . ' ' . g:header_field_author )
         let i += 1
     endif
     " File Name
@@ -294,7 +294,7 @@ fun s:add_header()
         else
             let email = ''
         endif
-        call append(i, b:comment_char . b:field_modified_by . ' ' . g:header_field_author )
+        call append(i, b:comment_char . b:field_modified_by . ' ' . g:header_field_author . email )
         let i += 1
     endif
     " Fill user's information

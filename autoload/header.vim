@@ -1,3 +1,9 @@
+" Author            : Percychen
+" File              : header.vim
+" Date              : 2018-11-20 09:24:22
+" Last Modified Date: 2018-11-20 09:24:28
+" Last Modified By  : Percychen <percychen@tencent.com>
+" Copyright (c) 2018, Tencent Inc. Sppd AI Group All rights reserved
 " PROPERTIES AND FUNCTIONS FOR GENERAL PURPOSES
 " ---------------------------------------------
 " Set default global values
@@ -77,6 +83,7 @@ fun s:set_props()
     if
         \ b:filetype == 'c' ||
         \ b:filetype == 'cpp' ||
+        \ b:filetype == 'jce' ||
         \ b:filetype == 'css' ||
         \ b:filetype == 'groovy' ||
         \ b:filetype == 'java' ||

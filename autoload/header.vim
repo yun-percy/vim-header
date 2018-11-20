@@ -1,7 +1,7 @@
 " Author            : Percychen
 " File              : header.vim
 " Date              : 2018-11-20 09:24:22
-" Last Modified Date: 2018-11-20 09:24:28
+" Last Modified Date: 2018-11-20 15:05:14
 " Last Modified By  : Percychen <percychen@tencent.com>
 " Copyright (c) 2018, Tencent Inc. Sppd AI Group All rights reserved
 " PROPERTIES AND FUNCTIONS FOR GENERAL PURPOSES
@@ -45,12 +45,6 @@ if !exists('g:header_max_size')
 endif
 if !exists('g:header_alignment')
     let g:header_alignment = 1
-endif
-if !exists('g:header_copyright_declare_toggle)
-    let g:header_copyright_declare_toggle= 0
-endif
-if !exists('g:header_copyright_declare)
-    let g:header_copyright_declare_toggle= 0
 endif
 
 " Path for license files directory
